@@ -498,54 +498,56 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
         </h1>
         
         {/* Date selector */}
-        <div className="flex items-center justify-between mt-3 sm:mt-4 bg-black rounded-full p-1">
-          <div className="flex items-center justify-between w-full">
-            <button 
-              className={`${isDateSelected(today) ? 'bg-white text-black' : 'text-white'} rounded-full px-3 sm:px-5 md:px-8 lg:px-4 xl:px-6 2xl:px-8 py-2 sm:py-2.5 font-medium text-xs sm:text-sm lg:text-sm xl:text-base flex-shrink-0`}
-              onClick={handleSelectToday}
-            >
-              Today
-            </button>
-            
+        <div className="flex items-center justify-center mt-3 sm:mt-4">
+          <div className="bg-black rounded-full p-1 max-w-[95%] sm:max-w-[90%] md:max-w-[85%] lg:max-w-[400px] xl:max-w-[500px]">
             <div className="flex items-center">
               <button 
-                className={`p-1.5 sm:p-2 lg:p-1.5 xl:p-1.5 2xl:p-2 ${isPrevDisabled() ? 'bg-zinc-700 text-gray-500 cursor-not-allowed' : 'bg-zinc-800 text-white cursor-pointer hover:bg-orange-500'} rounded-full transition-colors flex-shrink-0`} 
-                onClick={handlePrevDays}
-                disabled={isPrevDisabled()}
-                aria-label="Previous days"
+                className={`${isDateSelected(today) ? 'bg-white text-black' : 'text-white'} rounded-full px-3 sm:px-4 md:px-6 lg:px-4 xl:px-5 py-2 sm:py-2.5 font-medium text-xs sm:text-sm lg:text-sm xl:text-base flex-shrink-0 mr-2`}
+                onClick={handleSelectToday}
               >
-                <ChevronLeftIcon className="w-4 h-4 sm:w-5 sm:h-5 lg:w-4 lg:h-4 xl:w-4 xl:h-4 2xl:w-5 2xl:h-5" />
+                Today
               </button>
               
-              <div className="flex space-x-2 sm:space-x-3 md:space-x-2 lg:space-x-[0.15rem] xl:space-x-3 2xl:space-x-4 px-1 sm:px-2 md:px-1 lg:px-1 xl:px-2 2xl:px-3 max-w-[180px] sm:max-w-[230px] md:max-w-[300px] lg:max-w-[220px] xl:max-w-[350px] 2xl:max-w-[450px] overflow-x-auto">
-                {days.map((day, index) => (
-                  <div 
-                    key={index} 
-                    className={`relative flex flex-col items-center justify-center w-9 sm:w-11 md:w-12 lg:w-[26px] xl:w-10 2xl:w-14 h-12 sm:h-14 md:h-16 lg:h-14 ${day >= today ? 'cursor-pointer' : 'opacity-50 cursor-not-allowed'}`}
-                    onClick={() => day >= today && handleSelectDate(day)}
-                  >
-                    {isDateSelected(day) && (
-                      <div className="absolute inset-0 bg-white rounded-full" style={{ zIndex: 0 }}></div>
-                    )}
-                    <div className="flex flex-col items-center justify-center relative z-10">
-                      <div className={`${isDateSelected(day) ? 'text-black' : 'text-white'} font-medium text-base sm:text-lg md:text-xl lg:text-sm xl:text-base 2xl:text-xl`}>
-                        {day.getDate()}
-                      </div>
-                      <div className={`${isDateSelected(day) ? 'text-zinc-600' : 'text-gray-400'} text-xs sm:text-sm lg:text-[9px] xl:text-[10px] 2xl:text-sm`}>
-                        {daysOfWeek[day.getDay()]}
+              <div className="flex items-center">
+                <button 
+                  className={`p-1.5 sm:p-2 lg:p-1.5 xl:p-1.5 2xl:p-2 ${isPrevDisabled() ? 'bg-zinc-700 text-gray-500 cursor-not-allowed' : 'bg-zinc-800 text-white cursor-pointer hover:bg-orange-500'} rounded-full transition-colors flex-shrink-0`} 
+                  onClick={handlePrevDays}
+                  disabled={isPrevDisabled()}
+                  aria-label="Previous days"
+                >
+                  <ChevronLeftIcon className="w-4 h-4 sm:w-5 sm:h-5 lg:w-4 lg:h-4 xl:w-4 xl:h-4 2xl:w-5 2xl:h-5" />
+                </button>
+                
+                <div className="flex space-x-2 sm:space-x-3 md:space-x-2 lg:space-x-[0.15rem] xl:space-x-3 2xl:space-x-4 px-1 sm:px-2 md:px-1 lg:px-1 xl:px-2 2xl:px-3 max-w-[180px] sm:max-w-[230px] md:max-w-[300px] lg:max-w-[220px] xl:max-w-[350px] 2xl:max-w-[450px] overflow-x-auto">
+                  {days.map((day, index) => (
+                    <div 
+                      key={index} 
+                      className={`relative flex flex-col items-center justify-center w-9 sm:w-11 md:w-12 lg:w-[26px] xl:w-10 2xl:w-14 h-12 sm:h-14 md:h-16 lg:h-14 ${day >= today ? 'cursor-pointer' : 'opacity-50 cursor-not-allowed'}`}
+                      onClick={() => day >= today && handleSelectDate(day)}
+                    >
+                      {isDateSelected(day) && (
+                        <div className="absolute inset-0 bg-white rounded-full" style={{ zIndex: 0 }}></div>
+                      )}
+                      <div className="flex flex-col items-center justify-center relative z-10">
+                        <div className={`${isDateSelected(day) ? 'text-black' : 'text-white'} font-medium text-base sm:text-lg md:text-xl lg:text-sm xl:text-base 2xl:text-xl`}>
+                          {day.getDate()}
+                        </div>
+                        <div className={`${isDateSelected(day) ? 'text-zinc-600' : 'text-gray-400'} text-xs sm:text-sm lg:text-[9px] xl:text-[10px] 2xl:text-sm`}>
+                          {daysOfWeek[day.getDay()]}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+                
+                <button 
+                  className="p-1.5 sm:p-2 lg:p-1.5 xl:p-1.5 2xl:p-2 bg-zinc-800 rounded-full hover:bg-orange-500 text-white cursor-pointer transition-colors flex-shrink-0" 
+                  onClick={handleNextDays}
+                  aria-label="Next days"
+                >
+                  <ChevronRightIcon className="w-4 h-4 sm:w-5 sm:h-5 lg:w-4 lg:h-4 xl:w-4 xl:h-4 2xl:w-5 2xl:h-5" />
+                </button>
               </div>
-              
-              <button 
-                className="p-1.5 sm:p-2 lg:p-1.5 xl:p-1.5 2xl:p-2 bg-zinc-800 rounded-full hover:bg-orange-500 text-white cursor-pointer transition-colors mr-1 flex-shrink-0" 
-                onClick={handleNextDays}
-                aria-label="Next days"
-              >
-                <ChevronRightIcon className="w-4 h-4 sm:w-5 sm:h-5 lg:w-4 lg:h-4 xl:w-4 xl:h-4 2xl:w-5 2xl:h-5" />
-              </button>
             </div>
           </div>
         </div>
@@ -814,7 +816,7 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
                     {showCropper && imagePreview && (
                       <div className="mt-4 border border-zinc-700 rounded-lg p-3 sm:p-4">
                         <h4 className="text-white text-sm font-medium mb-2">Crop Image (1:1.2 ratio)</h4>
-                        <div className="flex flex-col md:flex-row gap-4">
+                        <div className="flex flex-col gap-4">
                           <div className="relative flex-1">
                             <ReactCrop
                               crop={crop}
@@ -846,9 +848,9 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
                           </div>
                           
                           {/* Live Event Card Preview */}
-                          <div className="w-full md:w-64 flex-shrink-0">
+                          <div className="w-full">
                             <h5 className="text-white text-sm font-medium mb-2">Event Card Preview</h5>
-                            <div className="bg-zinc-800 rounded-xl overflow-hidden shadow-md">
+                            <div className="bg-zinc-800 rounded-xl overflow-hidden shadow-md max-w-md mx-auto">
                               {/* Mimics the image portion of the EventCard */}
                               {completedCrop && (
                                 <div className="relative h-36 w-full bg-zinc-700">
