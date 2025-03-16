@@ -1,0 +1,24 @@
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // Configuration for production deployment
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'hnmpwugorejesiaicdyj.supabase.co',
+        pathname: '/storage/v1/object/public/**',
+      }
+    ],
+  },
+  env: {
+    NEXT_PUBLIC_SUPABASE_URL: "https://hnmpwugorejesiaicdyj.supabase.co",
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhubXB3dWdvcmVqZXNpYWljZHlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk2ODg1OTIsImV4cCI6MjA1NTI2NDU5Mn0._fE06AsE_q-3sZSOcxhwlI6C_fTIVzb9hgUWa3FYAS0",
+    NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN: "pk.eyJ1IjoibHM2MTEwIiwiYSI6ImNtNzZ6Z2x0ODBjaHgyanB5NmlnYTVsMGcifQ.H_LX7IeqmERoNb9Q_t751A",
+    NEXT_PUBLIC_API_URL: "https://events-backend-rnmujd1dv-lokis-projects-9cd87cf7.vercel.app"
+  }
+};
+
+export default nextConfig;
