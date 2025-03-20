@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from "react";
-import { MapPinIcon, CalendarIcon, PencilIcon, CheckIcon, PlusIcon, EllipsisVerticalIcon } from "@heroicons/react/24/outline";
+import { MapPinIcon, CalendarIcon, PencilIcon, CheckIcon, PlusIcon, EllipsisVerticalIcon, ShareIcon } from "@heroicons/react/24/outline";
 import { formatTime, formatMonthDayYear } from "@/lib/utils";
 import { EventData } from "@/lib/supabase";
 import EditEventModal from "./EditEventModal";
@@ -43,6 +43,29 @@ export function EventCard({ event, isSelected, onClick, onEdit }: EventCardProps
     return !!event.rsvp_link && event.rsvp_link !== '' && event.rsvp_link !== '#';
   }, [event.rsvp_link]);
 
+  const handleShareClick = useCallback(() => {
+    const shareData = {
+      title: event.title,
+      text: `Check out this event: ${event.title}${event.description ? ` - ${event.description}` : ''}`,
+      url: window.location.href // Current URL
+    };
+    
+    if (navigator.share) {
+      navigator.share(shareData)
+        .then(() => {
+          console.log('Event shared successfully');
+        })
+        .catch((error) => {
+          console.error('Error sharing event:', error);
+        });
+    } else {
+      // Fallback for browsers that don't support the Web Share API
+      alert('Sharing is not supported in your browser');
+    }
+    
+    setShowDropdown(false);
+  }, [event.title, event.description]);
+
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -60,13 +83,13 @@ export function EventCard({ event, isSelected, onClick, onEdit }: EventCardProps
   return (
     <>
       <div 
-        className={`flex overflow-hidden bg-zinc-800 rounded-xl cursor-pointer transition-all ${
+        className={`flex overflow-hidden bg-zinc-800 rounded-xl cursor-pointer transition-all w-full sm:w-full md:w-full lg:w-[404px] h-auto min-h-[150px] lg:h-[202px] ${
           isSelected ? 'ring-2 ring-orange-500 shadow-lg' : 'hover:bg-zinc-700/50'
         }`}
         onClick={onClick}
       >
         {/* Image section - square aspect ratio */}
-        <div className="w-1/3 sm:w-1/4 md:w-1/3 aspect-square relative">
+        <div className="w-1/3 sm:w-1/3 md:w-5/12 lg:w-1/2 aspect-square relative">
           {event.image_url ? (
             <img 
               src={event.image_url}
@@ -81,7 +104,7 @@ export function EventCard({ event, isSelected, onClick, onEdit }: EventCardProps
         </div>
         
         {/* Content section */}
-        <div className="flex flex-col w-2/3 sm:w-3/4 md:w-2/3 p-2 sm:p-3">
+        <div className="flex flex-col w-2/3 sm:w-2/3 md:w-7/12 lg:w-1/2 p-2 sm:p-3">
           <div className="flex justify-between items-start relative">
             <h3 className="text-base sm:text-lg font-semibold text-white mb-1 truncate pr-2">{event.title}</h3>
             <button 
@@ -110,6 +133,16 @@ export function EventCard({ event, isSelected, onClick, onEdit }: EventCardProps
                   <PencilIcon className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
                   Edit Event
                 </div>
+                <div 
+                  className="px-3 sm:px-4 py-2 text-white text-xs sm:text-sm cursor-pointer hover:bg-zinc-700 flex items-center border-t border-zinc-700"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleShareClick();
+                  }}
+                >
+                  <ShareIcon className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
+                  Share Event
+                </div>
               </div>
             )}
           </div>
@@ -136,7 +169,7 @@ export function EventCard({ event, isSelected, onClick, onEdit }: EventCardProps
           <div className="flex items-center gap-1 sm:gap-2 mt-auto">
             {/* RSVP Button - Always active */}
             <button 
-              className="flex items-center justify-center px-2 sm:px-4 py-1 sm:py-1.5 rounded-full bg-orange-500 text-white text-xs sm:text-sm font-medium"
+              className="flex items-center justify-center px-2 sm:px-4 py-1 sm:py-1.5 rounded-full bg-zinc-700 text-white text-xs sm:text-sm font-medium"
               onClick={(e) => {
                 e.stopPropagation();
                 // If there's a valid RSVP link, navigate to it

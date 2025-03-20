@@ -130,8 +130,8 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-black overflow-hidden">
       <div className="p-2 sm:p-3 md:p-5 h-screen overflow-hidden">
-        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-[35%_65%] xl:grid-cols-[30%_70%] gap-2 sm:gap-3 md:gap-4 h-[calc(100vh-16px)] sm:h-[calc(100vh-24px)] md:h-[calc(100vh-40px)] overflow-hidden">
-          <div className="h-[60vh] sm:h-[55vh] md:h-[50vh] lg:h-full overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-[35%_65%] xl:grid-cols-[30%_70%] gap-0 h-[calc(100vh-16px)] sm:h-[calc(100vh-24px)] md:h-[calc(100vh-40px)] overflow-hidden">
+          <div className="h-[60vh] sm:h-[55vh] md:h-[50vh] lg:h-full overflow-hidden order-1">
             <Events 
               events={events} 
               selectedEvent={selectedEvent} 
@@ -171,7 +171,7 @@ export default function Home() {
               }}
             />
           </div>
-          <div className="h-[calc(40vh-16px)] sm:h-[calc(45vh-24px)] md:h-[calc(50vh-20px)] lg:h-full overflow-hidden rounded-3xl">
+          <div className="h-[calc(40vh-16px)] sm:h-[calc(45vh-24px)] md:h-[calc(50vh-20px)] lg:h-full overflow-hidden rounded-3xl lg:-ml-8 order-2">
             <Map 
               events={events} 
               selectedEvent={selectedEvent} 
