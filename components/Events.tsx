@@ -478,7 +478,7 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
   return (
     <div className="flex flex-col h-full overflow-hidden space-y-3">
       {/* Orange header with logo image */}
-      <div className="bg-orange-500 rounded-3xl p-3 sm:p-5 flex-shrink-0">
+      <div className="bg-orange-500 rounded-3xl p-3 sm:p-5 flex-shrink-0 w-full sm:w-full md:w-full lg:w-[434px] h-auto lg:h-[115px]">
         <h1 
           className="text-xl sm:text-2xl font-bold text-white flex items-center justify-center md:justify-start cursor-pointer"
           onClick={() => window.location.reload()}
@@ -498,11 +498,11 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
         </h1>
         
         {/* Date selector */}
-        <div className="flex items-center justify-center mt-3 sm:mt-4">
-          <div className="bg-black rounded-full p-1 max-w-[95%] sm:max-w-[90%] md:max-w-[85%] lg:max-w-[400px] xl:max-w-[500px]">
+        <div className="flex items-center justify-center md:justify-start mt-3 sm:mt-4">
+          <div className="bg-black rounded-[20px] w-full max-w-full sm:max-w-full md:max-w-full lg:w-[397px] h-[40px] flex items-center p-1">
             <div className="flex items-center">
               <button 
-                className={`${isDateSelected(today) ? 'bg-white text-black' : 'text-white'} rounded-full px-3 sm:px-4 md:px-6 lg:px-4 xl:px-5 py-2 sm:py-2.5 font-medium text-xs sm:text-sm lg:text-sm xl:text-base flex-shrink-0 mr-2`}
+                className={`${isDateSelected(today) ? 'bg-white text-black' : 'text-white'} rounded-full h-[32px] px-3 sm:px-4 md:px-6 lg:px-4 xl:px-5 font-medium text-xs sm:text-sm lg:text-sm xl:text-base flex-shrink-0 mr-2`}
                 onClick={handleSelectToday}
               >
                 Today
@@ -526,13 +526,13 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
                       onClick={() => day >= today && handleSelectDate(day)}
                     >
                       {isDateSelected(day) && (
-                        <div className="absolute inset-0 bg-white rounded-full" style={{ zIndex: 0 }}></div>
+                        <div className="absolute inset-[7px] bg-white rounded-full" style={{ zIndex: 0 }}></div>
                       )}
                       <div className="flex flex-col items-center justify-center relative z-10">
-                        <div className={`${isDateSelected(day) ? 'text-black' : 'text-white'} font-medium text-base sm:text-lg md:text-xl lg:text-sm xl:text-base 2xl:text-xl`}>
+                        <div className={`${isDateSelected(day) ? 'text-black' : 'text-white'} font-medium text-sm sm:text-base md:text-lg lg:text-xs xl:text-sm 2xl:text-base`}>
                           {day.getDate()}
                         </div>
-                        <div className={`${isDateSelected(day) ? 'text-zinc-600' : 'text-gray-400'} text-xs sm:text-sm lg:text-[9px] xl:text-[10px] 2xl:text-sm`}>
+                        <div className={`${isDateSelected(day) ? 'text-zinc-600' : 'text-gray-400'} text-[10px] sm:text-xs lg:text-[8px] xl:text-[9px] 2xl:text-xs`}>
                           {daysOfWeek[day.getDay()]}
                         </div>
                       </div>
@@ -554,22 +554,21 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
       </div>
 
       {/* Events container */}
-      <div className="bg-zinc-900 rounded-3xl flex-1 overflow-hidden flex flex-col">
-        {/* Events header with count and filter */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 gap-2 sm:gap-0 flex-shrink-0">
-          <h2 className="text-base font-semibold text-white">{filteredEvents.length}</h2>
-          <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-3 xl:space-x-4 flex-wrap sm:flex-nowrap">
+      <div className="bg-zinc-900 rounded-3xl flex-1 overflow-hidden flex flex-col w-full sm:w-full md:w-full lg:w-[435px] h-auto lg:h-[799px]">
+        {/* Events header with filter */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-center md:justify-start p-3 sm:p-4 gap-2 sm:gap-0 flex-shrink-0">
+          <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-3 xl:space-x-4 flex-wrap sm:flex-nowrap w-full lg:w-[397px]">
             {/* Add search box - smaller for screen sizes 1024px-1635px */}
-            <div className="relative w-full sm:w-auto">
+            <div className="relative">
               <input
                 type="text"
                 placeholder={searchPlaceholder}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full sm:w-40 md:w-48 lg:w-32 xl:w-40 2xl:w-52 bg-zinc-800 text-white text-sm rounded-full pl-8 pr-3 py-2 lg:py-1.5 lg:text-xs xl:text-sm placeholder-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                className="w-[157px] h-[39px] bg-zinc-800 text-white text-sm rounded-full pl-8 pr-3 py-2 placeholder-white focus:outline-none focus:ring-1 focus:ring-orange-500"
               />
               <MagnifyingGlassIcon
-                className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 lg:w-3.5 lg:h-3.5 xl:w-4 xl:h-4 text-white"
+                className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white"
               />
             </div>
             
@@ -611,359 +610,360 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
             
             {/* Button to open the Add Event modal */}
             <button 
-              className="flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-3 md:px-4 lg:px-3 xl:px-3 2xl:px-4 py-1.5 sm:py-2 bg-orange-500 rounded-full h-[32px] sm:h-[38px] lg:h-[40px] flex-shrink-0 whitespace-nowrap"
+              className="flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-orange-500 rounded-full h-[40px] flex-shrink-0 whitespace-nowrap ml-auto md:ml-2"
               onClick={() => setShowCustomAddEvent(true)}
             >
-              <PlusIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-              <span className="text-white font-medium text-xs sm:text-sm md:text-base lg:hidden xl:inline-block text-ellipsis">Add</span>
-              <span className="text-white font-medium hidden lg:inline-block xl:hidden">Add</span>
+              <PlusIcon className="w-5 h-5 text-white" />
+              <span className="text-white font-medium text-sm">Add event</span>
             </button>
           </div>
         </div>
         
         {/* Events list area */}
-        <div className="flex-1 overflow-y-auto px-3 sm:px-4 pb-6 custom-scrollbar">
-          {showCustomAddEvent ? (
-            <div className="bg-zinc-800 rounded-xl mb-4">
-              <div className="flex justify-between items-center p-3 border-b border-zinc-700">
-                <h3 className="text-lg font-semibold text-white">Add New Event</h3>
-                <button 
-                  onClick={() => setShowCustomAddEvent(false)}
-                  className="text-zinc-400 hover:text-white transition-colors"
-                >
-                  <XMarkIcon className="w-5 h-5" />
-                </button>
-              </div>
-              
-              {/* Custom add event form */}
-              <form onSubmit={handleSubmit(onSubmit)} className="p-3 sm:p-4">
-                <div className="space-y-4">
-                  {/* Title */}
-                  <div>
-                    <label className="block text-sm font-medium text-zinc-400 mb-1">Event Title</label>
-                    <input
-                      {...register("title", { 
-                        required: "Title is required",
-                        maxLength: { value: 60, message: "Title must be less than 60 characters" }
-                      })}
-                      placeholder="e.g., Math Study Group Session"
-                      className="w-full bg-zinc-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
-                    />
-                    {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title.message}</p>}
-                  </div>
-                  
-                  {/* Description */}
-                  <div>
-                    <label className="block text-sm font-medium text-zinc-400 mb-1">Description</label>
-                    <textarea
-                      {...register("description", { 
-                        required: "Description is required", 
-                        maxLength: { value: 250, message: "Description must be less than 250 characters" }
-                      })}
-                      placeholder="Describe your event..."
-                      rows={3}
-                      className="w-full bg-zinc-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
-                    />
-                    {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description.message}</p>}
-                  </div>
-
-                  {/* Email */}
-                  <div>
-                    <label className="block text-sm font-medium text-zinc-400 mb-1">Email (.edu required)</label>
-                    <input
-                      type="email"
-                      {...register("email", { 
-                        required: "Email is required",
-                        validate: validateEmail
-                      })}
-                      placeholder="your.email@university.edu"
-                      className="w-full bg-zinc-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
-                    />
-                    {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
-                  </div>
-
-                  {/* Organizer Name */}
-                  <div>
-                    <label className="block text-sm font-medium text-zinc-400 mb-1">Organizer Name</label>
-                    <input
-                      {...register("organizerName", { required: "Organizer name is required" })}
-                      placeholder="Your name"
-                      className="w-full bg-zinc-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
-                    />
-                    {errors.organizerName && <p className="text-red-500 text-xs mt-1">{errors.organizerName.message}</p>}
-                  </div>
-                  
-                  {/* Event date and time */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="flex-1 overflow-y-auto pb-6 custom-scrollbar">
+          <div className="w-full md:w-full lg:w-[397px] px-3 sm:px-4 md:px-0 md:ml-4">
+            {showCustomAddEvent ? (
+              <div className="bg-zinc-800 rounded-xl mb-4">
+                <div className="flex justify-between items-center p-3 border-b border-zinc-700">
+                  <h3 className="text-lg font-semibold text-white">Add New Event</h3>
+                  <button 
+                    onClick={() => setShowCustomAddEvent(false)}
+                    className="text-zinc-400 hover:text-white transition-colors"
+                  >
+                    <XMarkIcon className="w-5 h-5" />
+                  </button>
+                </div>
+                
+                {/* Custom add event form */}
+                <form onSubmit={handleSubmit(onSubmit)} className="p-3 sm:p-4">
+                  <div className="space-y-4">
+                    {/* Title */}
                     <div>
-                      <label className="block text-sm font-medium text-zinc-400 mb-1">Date</label>
+                      <label className="block text-sm font-medium text-zinc-400 mb-1">Event Title</label>
                       <input
-                        type="date"
-                        {...register("date", { required: "Date is required" })}
+                        {...register("title", { 
+                          required: "Title is required",
+                          maxLength: { value: 60, message: "Title must be less than 60 characters" }
+                        })}
+                        placeholder="e.g., Math Study Group Session"
                         className="w-full bg-zinc-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
                       />
-                      {errors.date && <p className="text-red-500 text-xs mt-1">{errors.date.message}</p>}
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-zinc-400 mb-1">Start Time</label>
-                      <input
-                        type="time"
-                        {...register("startTime", { required: "Start time is required" })}
-                        className="w-full bg-zinc-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
-                      />
-                      {errors.startTime && <p className="text-red-500 text-xs mt-1">{errors.startTime.message}</p>}
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-zinc-400 mb-1">End Time</label>
-                      <input
-                        type="time"
-                        {...register("endTime", { required: "End time is required" })}
-                        className="w-full bg-zinc-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
-                      />
-                      {errors.endTime && <p className="text-red-500 text-xs mt-1">{errors.endTime.message}</p>}
-                    </div>
-                  </div>
-
-                  {/* Location */}
-                  <div>
-                    <label className="block text-sm font-medium text-zinc-400 mb-1">Location (Google Maps URL)</label>
-                    <input
-                      {...register("location", { required: "Location is required" })}
-                      placeholder="https://maps.google.com/..."
-                      className="w-full bg-zinc-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
-                    />
-                    {errors.location && <p className="text-red-500 text-xs mt-1">{errors.location.message}</p>}
-                  </div>
-
-                  {/* Event Type */}
-                  <div>
-                    <label className="block text-sm font-medium text-zinc-400 mb-1">Event Type</label>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                      {eventTypes.map((type) => (
-                        <label key={type} className="flex items-center space-x-2">
-                          <input
-                            type="checkbox"
-                            value={type}
-                            {...register("event_type", { required: "Select at least one event type" })}
-                            className="rounded bg-zinc-700 border-zinc-600 text-orange-500 focus:ring-orange-500"
-                          />
-                          <span className="text-sm text-white">{type}</span>
-                        </label>
-                      ))}
-                    </div>
-                    {errors.event_type && <p className="text-red-500 text-xs mt-1">{errors.event_type.message}</p>}
-                  </div>
-
-                  {/* Max Participants */}
-                  <div>
-                    <label className="block text-sm font-medium text-zinc-400 mb-1">Max Participants</label>
-                    <input
-                      type="number"
-                      {...register("max_participants", { 
-                        required: "Max participants is required",
-                        min: { value: 1, message: "Must be at least 1" }
-                      })}
-                      placeholder="10"
-                      className="w-full bg-zinc-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
-                    />
-                    {errors.max_participants && <p className="text-red-500 text-xs mt-1">{errors.max_participants.message}</p>}
-                  </div>
-
-                  {/* RSVP Link */}
-                  <div>
-                    <label className="block text-sm font-medium text-zinc-400 mb-1">RSVP Link (Optional)</label>
-                    <input
-                      {...register("rsvp_link")}
-                      placeholder="https://..."
-                      className="w-full bg-zinc-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
-                    />
-                    {errors.rsvp_link && <p className="text-red-500 text-xs mt-1">{errors.rsvp_link.message}</p>}
-                  </div>
-
-                  {/* Password */}
-                  <div>
-                    <label className="block text-sm font-medium text-zinc-400 mb-1">Password (for editing event)</label>
-                    <input
-                      type="password"
-                      {...register("password", { required: "Password is required" })}
-                      className="w-full bg-zinc-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
-                    />
-                    {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
-                  </div>
-
-                  {/* Image Upload */}
-                  <div>
-                    <label className="block text-sm font-medium text-zinc-400 mb-1">Event Image</label>
-                    <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 sm:space-x-4">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        {...register("image")}
-                        className="text-sm text-zinc-400 w-full sm:w-auto file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-500 file:text-white hover:file:bg-orange-600"
-                      />
-                      {(imagePreview || croppedImageUrl) && (
-                        <button
-                          type="button"
-                          onClick={clearImage}
-                          className="text-zinc-400 hover:text-white"
-                        >
-                          <XMarkIcon className="w-5 h-5" />
-                        </button>
-                      )}
+                      {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title.message}</p>}
                     </div>
                     
-                    {/* Image cropper */}
-                    {showCropper && imagePreview && (
-                      <div className="mt-4 border border-zinc-700 rounded-lg p-3 sm:p-4">
-                        <h4 className="text-white text-sm font-medium mb-2">Crop Image (1:1.2 ratio)</h4>
-                        <div className="flex flex-col gap-4">
-                          <div className="relative flex-1">
-                            <ReactCrop
-                              crop={crop}
-                              onChange={(c: Crop) => setCrop(c)}
-                              onComplete={handleCropComplete}
-                              aspect={1 / 1.2}
-                              className="max-w-full"
-                            >
-                              <img 
-                                ref={imageRef}
-                                src={imagePreview} 
-                                alt="Preview" 
+                    {/* Description */}
+                    <div>
+                      <label className="block text-sm font-medium text-zinc-400 mb-1">Description</label>
+                      <textarea
+                        {...register("description", { 
+                          required: "Description is required", 
+                          maxLength: { value: 250, message: "Description must be less than 250 characters" }
+                        })}
+                        placeholder="Describe your event..."
+                        rows={3}
+                        className="w-full bg-zinc-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                      />
+                      {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description.message}</p>}
+                    </div>
+
+                    {/* Email */}
+                    <div>
+                      <label className="block text-sm font-medium text-zinc-400 mb-1">Email (.edu required)</label>
+                      <input
+                        type="email"
+                        {...register("email", { 
+                          required: "Email is required",
+                          validate: validateEmail
+                        })}
+                        placeholder="your.email@university.edu"
+                        className="w-full bg-zinc-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                      />
+                      {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+                    </div>
+
+                    {/* Organizer Name */}
+                    <div>
+                      <label className="block text-sm font-medium text-zinc-400 mb-1">Organizer Name</label>
+                      <input
+                        {...register("organizerName", { required: "Organizer name is required" })}
+                        placeholder="Your name"
+                        className="w-full bg-zinc-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                      />
+                      {errors.organizerName && <p className="text-red-500 text-xs mt-1">{errors.organizerName.message}</p>}
+                    </div>
+                    
+                    {/* Event date and time */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div>
+                        <label className="block text-sm font-medium text-zinc-400 mb-1">Date</label>
+                        <input
+                          type="date"
+                          {...register("date", { required: "Date is required" })}
+                          className="w-full bg-zinc-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                        />
+                        {errors.date && <p className="text-red-500 text-xs mt-1">{errors.date.message}</p>}
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-zinc-400 mb-1">Start Time</label>
+                        <input
+                          type="time"
+                          {...register("startTime", { required: "Start time is required" })}
+                          className="w-full bg-zinc-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                        />
+                        {errors.startTime && <p className="text-red-500 text-xs mt-1">{errors.startTime.message}</p>}
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-zinc-400 mb-1">End Time</label>
+                        <input
+                          type="time"
+                          {...register("endTime", { required: "End time is required" })}
+                          className="w-full bg-zinc-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                        />
+                        {errors.endTime && <p className="text-red-500 text-xs mt-1">{errors.endTime.message}</p>}
+                      </div>
+                    </div>
+
+                    {/* Location */}
+                    <div>
+                      <label className="block text-sm font-medium text-zinc-400 mb-1">Location (Google Maps URL)</label>
+                      <input
+                        {...register("location", { required: "Location is required" })}
+                        placeholder="https://maps.google.com/..."
+                        className="w-full bg-zinc-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                      />
+                      {errors.location && <p className="text-red-500 text-xs mt-1">{errors.location.message}</p>}
+                    </div>
+
+                    {/* Event Type */}
+                    <div>
+                      <label className="block text-sm font-medium text-zinc-400 mb-1">Event Type</label>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                        {eventTypes.map((type) => (
+                          <label key={type} className="flex items-center space-x-2">
+                            <input
+                              type="checkbox"
+                              value={type}
+                              {...register("event_type", { required: "Select at least one event type" })}
+                              className="rounded bg-zinc-700 border-zinc-600 text-orange-500 focus:ring-orange-500"
+                            />
+                            <span className="text-sm text-white">{type}</span>
+                          </label>
+                        ))}
+                      </div>
+                      {errors.event_type && <p className="text-red-500 text-xs mt-1">{errors.event_type.message}</p>}
+                    </div>
+
+                    {/* Max Participants */}
+                    <div>
+                      <label className="block text-sm font-medium text-zinc-400 mb-1">Max Participants</label>
+                      <input
+                        type="number"
+                        {...register("max_participants", { 
+                          required: "Max participants is required",
+                          min: { value: 1, message: "Must be at least 1" }
+                        })}
+                        placeholder="10"
+                        className="w-full bg-zinc-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                      />
+                      {errors.max_participants && <p className="text-red-500 text-xs mt-1">{errors.max_participants.message}</p>}
+                    </div>
+
+                    {/* RSVP Link */}
+                    <div>
+                      <label className="block text-sm font-medium text-zinc-400 mb-1">RSVP Link (Optional)</label>
+                      <input
+                        {...register("rsvp_link")}
+                        placeholder="https://..."
+                        className="w-full bg-zinc-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                      />
+                      {errors.rsvp_link && <p className="text-red-500 text-xs mt-1">{errors.rsvp_link.message}</p>}
+                    </div>
+
+                    {/* Password */}
+                    <div>
+                      <label className="block text-sm font-medium text-zinc-400 mb-1">Password (for editing event)</label>
+                      <input
+                        type="password"
+                        {...register("password", { required: "Password is required" })}
+                        className="w-full bg-zinc-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                      />
+                      {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
+                    </div>
+
+                    {/* Image Upload */}
+                    <div>
+                      <label className="block text-sm font-medium text-zinc-400 mb-1">Event Image</label>
+                      <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 sm:space-x-4">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          {...register("image")}
+                          className="text-sm text-zinc-400 w-full sm:w-auto file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-500 file:text-white hover:file:bg-orange-600"
+                        />
+                        {(imagePreview || croppedImageUrl) && (
+                          <button
+                            type="button"
+                            onClick={clearImage}
+                            className="text-zinc-400 hover:text-white"
+                          >
+                            <XMarkIcon className="w-5 h-5" />
+                          </button>
+                        )}
+                      </div>
+                      
+                      {/* Image cropper */}
+                      {showCropper && imagePreview && (
+                        <div className="mt-4 border border-zinc-700 rounded-lg p-3 sm:p-4">
+                          <h4 className="text-white text-sm font-medium mb-2">Crop Image (1:1.2 ratio)</h4>
+                          <div className="flex flex-col gap-4">
+                            <div className="relative flex-1">
+                              <ReactCrop
+                                crop={crop}
+                                onChange={(c: Crop) => setCrop(c)}
+                                onComplete={handleCropComplete}
+                                aspect={1 / 1.2}
                                 className="max-w-full"
-                              />
-                            </ReactCrop>
+                              >
+                                <img 
+                                  ref={imageRef}
+                                  src={imagePreview} 
+                                  alt="Preview" 
+                                  className="max-w-full"
+                                />
+                              </ReactCrop>
+                              
+                              {/* Grid overlay */}
+                              <div className="absolute inset-0 pointer-events-none grid grid-cols-3 grid-rows-3">
+                                <div className="border-r border-b border-white/30"></div>
+                                <div className="border-r border-b border-white/30"></div>
+                                <div className="border-b border-white/30"></div>
+                                <div className="border-r border-b border-white/30"></div>
+                                <div className="border-r border-b border-white/30"></div>
+                                <div className="border-b border-white/30"></div>
+                                <div className="border-r border-white/30"></div>
+                                <div className="border-r border-white/30"></div>
+                                <div></div>
+                              </div>
+                            </div>
                             
-                            {/* Grid overlay */}
-                            <div className="absolute inset-0 pointer-events-none grid grid-cols-3 grid-rows-3">
-                              <div className="border-r border-b border-white/30"></div>
-                              <div className="border-r border-b border-white/30"></div>
-                              <div className="border-b border-white/30"></div>
-                              <div className="border-r border-b border-white/30"></div>
-                              <div className="border-r border-b border-white/30"></div>
-                              <div className="border-b border-white/30"></div>
-                              <div className="border-r border-white/30"></div>
-                              <div className="border-r border-white/30"></div>
-                              <div></div>
+                            {/* Live Event Card Preview */}
+                            <div className="w-full">
+                              <h5 className="text-white text-sm font-medium mb-2">Event Card Preview</h5>
+                              <div className="bg-zinc-800 rounded-xl overflow-hidden shadow-md max-w-md mx-auto">
+                                {/* Mimics the image portion of the EventCard */}
+                                {completedCrop && (
+                                  <div className="relative h-36 w-full bg-zinc-700">
+                                    <canvas
+                                      ref={(canvasRef) => {
+                                        if (canvasRef && imageRef.current && completedCrop) {
+                                          const ctx = canvasRef.getContext('2d');
+                                          if (ctx) {
+                                            const image = imageRef.current;
+                                            const scaleX = image.naturalWidth / image.width;
+                                            const scaleY = image.naturalHeight / image.height;
+                                            
+                                            // Set canvas to match preview container dimensions but maintain aspect ratio
+                                            canvasRef.width = canvasRef.parentElement?.clientWidth || completedCrop.width;
+                                            canvasRef.height = canvasRef.parentElement?.clientHeight || completedCrop.height;
+                                            
+                                            // Enable image smoothing for better quality
+                                            ctx.imageSmoothingEnabled = true;
+                                            ctx.imageSmoothingQuality = 'high';
+                                            
+                                            // Clear the canvas before drawing
+                                            ctx.clearRect(0, 0, canvasRef.width, canvasRef.height);
+                                            
+                                            ctx.drawImage(
+                                              image,
+                                              completedCrop.x * scaleX,
+                                              completedCrop.y * scaleY,
+                                              completedCrop.width * scaleX,
+                                              completedCrop.height * scaleY,
+                                              0,
+                                              0,
+                                              canvasRef.width,
+                                              canvasRef.height
+                                            );
+                                          }
+                                        }
+                                      }}
+                                      className="absolute inset-0 w-full h-full object-cover"
+                                    />
+                                  </div>
+                                )}
+                                
+                                {/* Dummy content to mimic event card layout */}
+                                <div className="p-3">
+                                  <div className="h-4 w-3/4 bg-zinc-700 rounded mb-2"></div>
+                                  <div className="h-3 w-1/2 bg-zinc-700 rounded mb-3"></div>
+                                  <div className="flex justify-between">
+                                    <div className="h-6 w-16 bg-zinc-700 rounded"></div>
+                                    <div className="h-6 w-6 bg-zinc-700 rounded-full"></div>
+                                  </div>
+                                </div>
+                              </div>
+                              <p className="text-xs text-zinc-400 mt-2">
+                                This is how your image will appear in the event card.
+                              </p>
                             </div>
                           </div>
                           
-                          {/* Live Event Card Preview */}
-                          <div className="w-full">
-                            <h5 className="text-white text-sm font-medium mb-2">Event Card Preview</h5>
-                            <div className="bg-zinc-800 rounded-xl overflow-hidden shadow-md max-w-md mx-auto">
-                              {/* Mimics the image portion of the EventCard */}
-                              {completedCrop && (
-                                <div className="relative h-36 w-full bg-zinc-700">
-                                  <canvas
-                                    ref={(canvasRef) => {
-                                      if (canvasRef && imageRef.current && completedCrop) {
-                                        const ctx = canvasRef.getContext('2d');
-                                        if (ctx) {
-                                          const image = imageRef.current;
-                                          const scaleX = image.naturalWidth / image.width;
-                                          const scaleY = image.naturalHeight / image.height;
-                                          
-                                          // Set canvas to match preview container dimensions but maintain aspect ratio
-                                          canvasRef.width = canvasRef.parentElement?.clientWidth || completedCrop.width;
-                                          canvasRef.height = canvasRef.parentElement?.clientHeight || completedCrop.height;
-                                          
-                                          // Enable image smoothing for better quality
-                                          ctx.imageSmoothingEnabled = true;
-                                          ctx.imageSmoothingQuality = 'high';
-                                          
-                                          // Clear the canvas before drawing
-                                          ctx.clearRect(0, 0, canvasRef.width, canvasRef.height);
-                                          
-                                          ctx.drawImage(
-                                            image,
-                                            completedCrop.x * scaleX,
-                                            completedCrop.y * scaleY,
-                                            completedCrop.width * scaleX,
-                                            completedCrop.height * scaleY,
-                                            0,
-                                            0,
-                                            canvasRef.width,
-                                            canvasRef.height
-                                          );
-                                        }
-                                      }
-                                    }}
-                                    className="absolute inset-0 w-full h-full object-cover"
-                                  />
-                                </div>
-                              )}
-                              
-                              {/* Dummy content to mimic event card layout */}
-                              <div className="p-3">
-                                <div className="h-4 w-3/4 bg-zinc-700 rounded mb-2"></div>
-                                <div className="h-3 w-1/2 bg-zinc-700 rounded mb-3"></div>
-                                <div className="flex justify-between">
-                                  <div className="h-6 w-16 bg-zinc-700 rounded"></div>
-                                  <div className="h-6 w-6 bg-zinc-700 rounded-full"></div>
-                                </div>
-                              </div>
-                            </div>
-                            <p className="text-xs text-zinc-400 mt-2">
-                              This is how your image will appear in the event card.
-                            </p>
+                          <div className="flex justify-end mt-4">
+                            <button
+                              type="button"
+                              onClick={handleCropConfirm}
+                              className="px-3 py-1 bg-orange-500 text-white rounded-md text-sm"
+                            >
+                              Confirm Crop
+                            </button>
                           </div>
                         </div>
-                        
-                        <div className="flex justify-end mt-4">
-                          <button
-                            type="button"
-                            onClick={handleCropConfirm}
-                            className="px-3 py-1 bg-orange-500 text-white rounded-md text-sm"
-                          >
-                            Confirm Crop
-                          </button>
+                      )}
+                      
+                      {/* Display cropped image preview */}
+                      {!showCropper && croppedImageUrl && (
+                        <div className="mt-2">
+                          <img src={croppedImageUrl} alt="Preview" className="w-full max-w-xs h-auto object-cover rounded-lg" />
                         </div>
-                      </div>
-                    )}
+                      )}
+                    </div>
                     
-                    {/* Display cropped image preview */}
-                    {!showCropper && croppedImageUrl && (
-                      <div className="mt-2">
-                        <img src={croppedImageUrl} alt="Preview" className="w-full max-w-xs h-auto object-cover rounded-lg" />
-                      </div>
-                    )}
+                    {/* Submit button */}
+                    <div className="flex justify-end pt-2">
+                      <button
+                        type="submit"
+                        disabled={isLoading}
+                        className="flex items-center justify-center px-4 py-2 bg-orange-500 hover:bg-orange-600 rounded-lg text-white font-medium transition-colors"
+                      >
+                        {isLoading ? 'Creating...' : 'Create Event'}
+                      </button>
+                    </div>
                   </div>
-                  
-                  {/* Submit button */}
-                  <div className="flex justify-end pt-2">
-                    <button
-                      type="submit"
-                      disabled={isLoading}
-                      className="flex items-center justify-center px-4 py-2 bg-orange-500 hover:bg-orange-600 rounded-lg text-white font-medium transition-colors"
-                    >
-                      {isLoading ? 'Creating...' : 'Create Event'}
-                    </button>
+                </form>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {filteredEvents.map(event => (
+                  <div 
+                    key={event.id}
+                    ref={event.id === selectedEvent ? selectedEventRef : null}
+                    className="w-full"
+                  >
+                    <EventCard 
+                      event={event} 
+                      isSelected={selectedEvent === event.id}
+                      onClick={() => onEventSelect(event.id || '')}
+                      onEdit={() => {
+                        if (onEventUpdated) {
+                          onEventUpdated();
+                        }
+                      }}
+                    />
                   </div>
-                </div>
-              </form>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {filteredEvents.map(event => (
-                <div 
-                  key={event.id}
-                  ref={event.id === selectedEvent ? selectedEventRef : null}
-                  className="w-full"
-                >
-                  <EventCard 
-                    event={event} 
-                    isSelected={selectedEvent === event.id}
-                    onClick={() => onEventSelect(event.id || '')}
-                    onEdit={() => {
-                      if (onEventUpdated) {
-                        onEventUpdated();
-                      }
-                    }}
-                  />
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
