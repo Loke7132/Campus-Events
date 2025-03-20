@@ -94,7 +94,7 @@ A modern web application designed to connect students with events happening on t
 ### Event Management
 
 - Events can be edited by the creator using the provided password
-- Click on an event to view more details
+- Click on an event to view more detail
 
 ## Project Structure
 
