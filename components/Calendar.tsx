@@ -49,35 +49,50 @@ export default function Calendar({ onDateSelect, selectedDate, hideNav }: Props)
 
   // Render function
   return (
-    <div className="relative flex items-center w-full">
-      <NavArrow direction="left" onClick={handleScrollPrev} hide={hideNav} />
-      
-      <div
-        ref={scrollContainerRef}
-        className="flex items-center justify-start overflow-x-auto scrollbar-none px-1 sm:px-2 md:px-3 py-2 space-x-1 sm:space-x-2 md:space-x-2 lg:space-x-2 xl:space-x-4 w-full"
+    <div className="flex items-center justify-between px-[5px] relative w-full max-w-[398px]">
+      <button 
+        className="bg-white text-black rounded-full h-[32px] w-[98px] font-medium text-sm ml-[5px]"
+        onClick={() => onDateSelect && onDateSelect(new Date())}
       >
-        {getDateRange(currentDate, 7).map((date, index) => {
-          const isToday = date.toDateString() === new Date().toDateString();
-          const isSelected = selectedDate ? date.toDateString() === selectedDate.toDateString() : false;
-          
-          return (
-            <DateButton
-              key={date.toISOString()}
-              ref={isToday ? todayRef : undefined}
-              date={date}
-              isSelected={isSelected}
-              isToday={isToday}
-              onClick={() => {
-                if (onDateSelect) {
-                  onDateSelect(date);
-                }
-              }}
-            />
-          );
-        })}
+        Today
+      </button>
+      
+      <button 
+        className="text-white w-[32px] h-[32px] flex items-center justify-center ml-[36px] bg-gray-800 rounded-full" 
+        onClick={handleScrollPrev}
+        aria-label="Previous days"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+        </svg>
+      </button>
+      
+      <div className="flex justify-between w-[69px] text-center">
+        {getDateRange(currentDate, 3).map((date, index) => (
+          <div 
+            key={date.toISOString()}
+            className="flex flex-col items-center w-[23px]" 
+            onClick={() => onDateSelect && onDateSelect(date)}
+          >
+            <div className="text-white text-sm font-medium">
+              {date.getDate()}
+            </div>
+            <div className="text-gray-400 text-xs">
+              {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][date.getDay()]}
+            </div>
+          </div>
+        ))}
       </div>
       
-      <NavArrow direction="right" onClick={handleScrollNext} hide={hideNav} />
+      <button 
+        className="text-white w-[32px] h-[32px] flex items-center justify-center mr-[36px] bg-gray-800 rounded-full" 
+        onClick={handleScrollNext}
+        aria-label="Next days"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+        </svg>
+      </button>
     </div>
   );
 }

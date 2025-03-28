@@ -211,7 +211,7 @@ export default function Map({ events, userPos, selectedEvent, onEventSelect }: M
 
     return (
         <div className="h-full w-full relative">
-            <div id="map-container" ref={mapContainerRef} className="rounded-3xl overflow-hidden shadow-lg h-full w-full" />
+            <div id="map-container" ref={mapContainerRef} className="rounded-r-3xl lg:rounded-l-none overflow-hidden shadow-lg h-full w-full" />
             
             {/* Legend at bottom left of map, stacked vertically - hidden on small screens */}
             <div className="absolute left-4 bottom-4 bg-black rounded-lg px-3 py-2 space-y-2 w-48 hidden md:block">

@@ -38,10 +38,10 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
   const [showCropper, setShowCropper] = useState(false);
   const [crop, setCrop] = useState<Crop>({ 
     unit: '%', 
-    width: 100, 
-    height: 100,
-    x: 0,
-    y: 0
+    width: 80,  // Start with 80% of image width
+    height: 57, // For 1:1.4 aspect ratio (80 / 1.4)
+    x: 10,      // Centered horizontally
+    y: 20       // A bit higher than center vertically for faces
   });
   const [completedCrop, setCompletedCrop] = useState<Crop | null>(null);
   const imageRef = useRef<HTMLImageElement | null>(null);
@@ -92,7 +92,7 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
         setCrop({
           unit: '%',
           width: 80,  // Start with 80% of image width
-          height: 45, // For 16:9 aspect ratio (80 * 9/16)
+          height: 57, // For 1:1.4 aspect ratio (80 / 1.4)
           x: 10,      // Centered horizontally
           y: 20       // A bit higher than center vertically for faces
         });
@@ -499,62 +499,58 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
         
         {/* Date selector */}
         <div className="flex items-center justify-center md:justify-start mt-3 sm:mt-4">
-          <div className="bg-black rounded-[20px] w-full max-w-full sm:max-w-full md:max-w-full lg:w-[397px] h-[40px] flex items-center p-1">
-            <div className="flex items-center">
+          <div className="bg-black rounded-full w-full max-w-full h-[40px] flex items-center p-1">
+            <div className="flex items-center justify-between w-full px-1">
               <button 
-                className={`${isDateSelected(today) ? 'bg-white text-black' : 'text-white'} rounded-full h-[32px] px-3 sm:px-4 md:px-6 lg:px-4 xl:px-5 font-medium text-xs sm:text-sm lg:text-sm xl:text-base flex-shrink-0 mr-2`}
+                className={`${isDateSelected(today) ? 'bg-white text-black' : 'bg-transparent text-white'} rounded-full h-[32px] w-[98px] font-medium text-sm`}
                 onClick={handleSelectToday}
               >
                 Today
               </button>
               
-              <div className="flex items-center">
-                <button 
-                  className={`p-1.5 sm:p-2 lg:p-1.5 xl:p-1.5 2xl:p-2 ${isPrevDisabled() ? 'bg-zinc-700 text-gray-500 cursor-not-allowed' : 'bg-zinc-800 text-white cursor-pointer hover:bg-orange-500'} rounded-full transition-colors flex-shrink-0`} 
-                  onClick={handlePrevDays}
-                  disabled={isPrevDisabled()}
-                  aria-label="Previous days"
-                >
-                  <ChevronLeftIcon className="w-4 h-4 sm:w-5 sm:h-5 lg:w-4 lg:h-4 xl:w-4 xl:h-4 2xl:w-5 2xl:h-5" />
-                </button>
+              <button 
+                className="text-white cursor-pointer" 
+                onClick={handlePrevDays}
+                aria-label="Previous days"
+              >
+                <ChevronLeftIcon className="w-5 h-5" />
+              </button>
                 
-                <div className="flex space-x-2 sm:space-x-3 md:space-x-2 lg:space-x-[0.15rem] xl:space-x-3 2xl:space-x-4 px-1 sm:px-2 md:px-1 lg:px-1 xl:px-2 2xl:px-3 max-w-[180px] sm:max-w-[230px] md:max-w-[300px] lg:max-w-[220px] xl:max-w-[350px] 2xl:max-w-[450px] overflow-x-auto">
-                  {days.map((day, index) => (
-                    <div 
-                      key={index} 
-                      className={`relative flex flex-col items-center justify-center w-9 sm:w-11 md:w-12 lg:w-[26px] xl:w-10 2xl:w-14 h-12 sm:h-14 md:h-16 lg:h-14 ${day >= today ? 'cursor-pointer' : 'opacity-50 cursor-not-allowed'}`}
-                      onClick={() => day >= today && handleSelectDate(day)}
-                    >
-                      {isDateSelected(day) && (
-                        <div className="absolute inset-[7px] bg-white rounded-full" style={{ zIndex: 0 }}></div>
-                      )}
-                      <div className="flex flex-col items-center justify-center relative z-10">
-                        <div className={`${isDateSelected(day) ? 'text-black' : 'text-white'} font-medium text-sm sm:text-base md:text-lg lg:text-xs xl:text-sm 2xl:text-base`}>
-                          {day.getDate()}
-                        </div>
-                        <div className={`${isDateSelected(day) ? 'text-zinc-600' : 'text-gray-400'} text-[10px] sm:text-xs lg:text-[8px] xl:text-[9px] 2xl:text-xs`}>
-                          {daysOfWeek[day.getDay()]}
-                        </div>
-                      </div>
+              {/* Date display */}
+              <div className="flex justify-between w-[150px] mx-auto">
+                {days.slice(0, 3).map((day, index) => (
+                  <div 
+                    key={index} 
+                    className={`
+                      flex flex-col items-center justify-center cursor-pointer
+                      ${isDateSelected(day) ? 'bg-white text-black rounded-full px-2' : ''}
+                    `}
+                    onClick={() => day >= today && handleSelectDate(day)}
+                  >
+                    <div className={`text-sm font-medium ${isDateSelected(day) ? 'text-black' : 'text-white'}`}>
+                      {day.getDate()}
                     </div>
-                  ))}
-                </div>
-                
-                <button 
-                  className="p-1.5 sm:p-2 lg:p-1.5 xl:p-1.5 2xl:p-2 bg-zinc-800 rounded-full hover:bg-orange-500 text-white cursor-pointer transition-colors flex-shrink-0" 
-                  onClick={handleNextDays}
-                  aria-label="Next days"
-                >
-                  <ChevronRightIcon className="w-4 h-4 sm:w-5 sm:h-5 lg:w-4 lg:h-4 xl:w-4 xl:h-4 2xl:w-5 2xl:h-5" />
-                </button>
+                    <div className={`text-xs ${isDateSelected(day) ? 'text-black' : 'text-gray-400'}`}>
+                      {daysOfWeek[day.getDay()]}
+                    </div>
+                  </div>
+                ))}
               </div>
+              
+              <button 
+                className="text-white cursor-pointer" 
+                onClick={handleNextDays}
+                aria-label="Next days"
+              >
+                <ChevronRightIcon className="w-5 h-5" />
+              </button>
             </div>
           </div>
         </div>
       </div>
 
       {/* Events container */}
-      <div className="bg-zinc-900 rounded-3xl flex-1 overflow-hidden flex flex-col w-full sm:w-full md:w-full lg:w-[435px] h-auto lg:h-[799px]">
+      <div className="bg-zinc-900 rounded-3xl lg:rounded-r-none flex-1 overflow-hidden flex flex-col w-full sm:w-full md:w-full lg:w-[435px] h-auto lg:h-[799px]">
         {/* Events header with filter */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-center md:justify-start p-3 sm:p-4 gap-2 sm:gap-0 flex-shrink-0">
           <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-3 xl:space-x-4 flex-wrap sm:flex-nowrap w-full lg:w-[397px]">
@@ -814,14 +810,14 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
                       {/* Image cropper */}
                       {showCropper && imagePreview && (
                         <div className="mt-4 border border-zinc-700 rounded-lg p-3 sm:p-4">
-                          <h4 className="text-white text-sm font-medium mb-2">Crop Image (1:1.2 ratio)</h4>
+                          <h4 className="text-white text-sm font-medium mb-2">Crop Image (1:1.4 ratio)</h4>
                           <div className="flex flex-col gap-4">
                             <div className="relative flex-1">
                               <ReactCrop
                                 crop={crop}
                                 onChange={(c: Crop) => setCrop(c)}
                                 onComplete={handleCropComplete}
-                                aspect={1 / 1.2}
+                                aspect={1 / 1.4}
                                 className="max-w-full"
                               >
                                 <img 
