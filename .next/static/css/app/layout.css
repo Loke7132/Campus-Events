@@ -1817,7 +1817,7 @@ body {
 @media screen and (min-width: 1024px) and (max-width: 1419px) {
     /* Events container width adjustment */
     .lg\:w-\[435px\] {
-        width: 480px !important;
+        width: 520px !important;
     }
 }
 .file\:mr-4::file-selector-button {
@@ -2459,20 +2459,16 @@ body {
     width: 347px;
   }
 
-  .lg\:w-\[385px\] {
-    width: 385px;
-  }
-
   .lg\:w-\[404px\] {
     width: 404px;
   }
 
-  .lg\:w-\[420px\] {
-    width: 420px;
-  }
-
   .lg\:w-\[435px\] {
     width: 435px;
+  }
+
+  .lg\:w-\[440px\] {
+    width: 440px;
   }
 
   .lg\:w-\[55\%\] {
