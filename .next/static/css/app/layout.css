@@ -1801,7 +1801,7 @@ body {
 }
 
 /* Custom media query for screen size 1024px-1419px */
-@media screen and (min-width: 1024px) and (max-width: 1419px) {
+@media screen and (min-width: 1024px) and (max-width: 2838px) {
     /* Events container width adjustment */
     .lg\:w-\[435px\] {
         width: 700px !important;
@@ -1814,7 +1814,7 @@ body {
 }
 
 /* Custom media query for screen size 1024px-1279px */
-@media screen and (min-width: 1024px) and (max-width: 1419px) {
+@media screen and (min-width: 1024px) and (max-width: 2838px) {
     /* Events container width adjustment */
     .lg\:w-\[435px\] {
         width: 520px !important;
