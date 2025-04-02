@@ -478,7 +478,7 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
   return (
     <div className="flex flex-col h-full overflow-hidden space-y-3">
       {/* Orange header with logo image */}
-      <div className="bg-orange-500 rounded-3xl p-3 sm:p-5 flex-shrink-0 w-full sm:w-full md:w-full lg:w-[434px] h-auto lg:h-[115px]">
+      <div className="bg-orange-500 rounded-3xl p-3 sm:p-5 flex-shrink-0 w-full sm:w-full md:w-full lg:w-[420px] h-auto lg:h-[115px]">
         <h1 
           className="text-xl sm:text-2xl font-bold text-white flex items-center justify-center md:justify-start cursor-pointer"
           onClick={() => window.location.reload()}
@@ -550,10 +550,10 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
       </div>
 
       {/* Events container */}
-      <div className="bg-zinc-900 rounded-3xl lg:rounded-r-none flex-1 overflow-hidden flex flex-col w-full sm:w-full md:w-full lg:w-[435px] h-auto lg:h-[799px]">
+      <div className="bg-zinc-900 rounded-3xl lg:rounded-r-none flex-1 overflow-hidden flex flex-col w-full sm:w-full md:w-full lg:w-[420px] h-auto lg:h-[799px]">
         {/* Events header with filter */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-center md:justify-start p-3 sm:p-4 gap-2 sm:gap-0 flex-shrink-0">
-          <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-3 xl:space-x-4 flex-wrap sm:flex-nowrap w-full lg:w-[397px]">
+          <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-3 xl:space-x-4 flex-wrap sm:flex-nowrap w-full lg:w-[347px]">
             {/* Add search box - smaller for screen sizes 1024px-1635px */}
             <div className="relative">
               <input
@@ -617,7 +617,7 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
         
         {/* Events list area */}
         <div className="flex-1 overflow-y-auto pb-6 custom-scrollbar">
-          <div className="w-full md:w-full lg:w-[397px] px-3 sm:px-4 md:px-0 md:ml-4">
+          <div className="w-full md:w-full lg:w-[347px] px-3 sm:px-4 md:px-0 md:ml-4">
             {showCustomAddEvent ? (
               <div className="bg-zinc-800 rounded-xl mb-4">
                 <div className="flex justify-between items-center p-3 border-b border-zinc-700">

@@ -131,7 +131,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-black overflow-hidden p-[28px]">
       <div className="h-[calc(100vh-56px)] overflow-hidden">
         <div className="flex flex-col lg:flex-row gap-0 h-full overflow-hidden">
-          <div className="h-[60vh] sm:h-[55vh] md:h-[50vh] lg:h-full lg:w-[50%] xl:w-[38%] 2xl:w-[28%] overflow-y-auto overflow-x-hidden order-2 lg:order-1 relative lg:pr-0">
+          <div className="h-[60vh] sm:h-[55vh] md:h-[50vh] lg:h-full lg:w-[435px] xl:w-[38%] 2xl:w-[28%] overflow-y-auto overflow-x-hidden order-2 lg:order-1 relative lg:pr-0">
             <Events 
               events={events} 
               selectedEvent={selectedEvent} 
