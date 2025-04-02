@@ -309,6 +309,46 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
     }
   };
 
+  // Generate days starting from tomorrow, not today
+  const getDays = () => {
+    const days = [];
+    
+    // Create tomorrow's date as the starting point if we're at today
+    let startDate = new Date(currentStartDay);
+    if (currentStartDay.getTime() === today.getTime()) {
+      startDate = new Date(today);
+      startDate.setDate(today.getDate() + 1);
+    }
+
+    // Get number of days to show based on screen width
+    const getDaysToShow = () => {
+      if (typeof window === 'undefined') return 3;
+      const width = window.innerWidth;
+      if (width >= 1024) return 3;
+      if (width >= 768 && width < 1024) return 15;
+      if (width > 640 && width <= 768) return 6;
+      if ( width < 640) return 3;
+      return 2;
+    };
+    
+    const daysToShow = getDaysToShow();
+    
+    for (let i = 0; i < daysToShow; i++) {
+      const date = new Date(startDate);
+      date.setDate(startDate.getDate() + i);
+      days.push(date);
+    }
+    return days;
+  };
+
+  const days = getDays();
+  const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+  // Check if a date is selected
+  const isDateSelected = (date: Date) => {
+    return date.toDateString() === selectedDay.toDateString();
+  };
+
   // Handle moving to previous/next set of days
   const handlePrevDays = () => {
     // If currentStartDay is tomorrow, we can't go back further
@@ -319,7 +359,8 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
       setCurrentStartDay(today); // Stay at today (which shows dates from tomorrow)
     } else {
       const newStartDay = new Date(currentStartDay);
-      newStartDay.setDate(currentStartDay.getDate() - 5);
+      const daysToMove = getDays().length;
+      newStartDay.setDate(currentStartDay.getDate() - daysToMove);
       
       // Ensure we don't go earlier than today
       if (newStartDay < today) {
@@ -332,19 +373,9 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
 
   const handleNextDays = () => {
     const newStartDay = new Date(currentStartDay);
-    newStartDay.setDate(currentStartDay.getDate() + 5);
+    const daysToMove = getDays().length;
+    newStartDay.setDate(currentStartDay.getDate() + daysToMove);
     setCurrentStartDay(newStartDay);
-  };
-
-  // Check if prev button should be disabled
-  const isPrevDisabled = () => {
-    // Get tomorrow's date
-    const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
-    
-    // Disable prev button if we're already showing dates from tomorrow
-    return currentStartDay.getTime() === today.getTime() || 
-           (currentStartDay.getTime() <= tomorrow.getTime());
   };
 
   const handleTypeToggle = (type: string) => {
@@ -423,34 +454,6 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
     }
   }, [selectedEvent]);
 
-  // Generate days starting from tomorrow, not today
-  const getDays = () => {
-    const days = [];
-    
-    // Create tomorrow's date as the starting point if we're at today
-    let startDate = new Date(currentStartDay);
-    if (currentStartDay.getTime() === today.getTime()) {
-      startDate = new Date(today);
-      startDate.setDate(today.getDate() + 1);
-    }
-    
-    // Use 3 days for better fit across all screen sizes
-    for (let i = 0; i < 3; i++) {
-      const date = new Date(startDate);
-      date.setDate(startDate.getDate() + i);
-      days.push(date);
-    }
-    return days;
-  };
-
-  const days = getDays();
-  const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-  // Check if a date is selected
-  const isDateSelected = (date: Date) => {
-    return date.toDateString() === selectedDay.toDateString();
-  };
-
   const [searchPlaceholder, setSearchPlaceholder] = useState("Search events...");
   
   // Adjust search placeholder based on screen size
@@ -509,7 +512,7 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
               </button>
               
               <button 
-                className="text-white cursor-pointer" 
+                className="text-white cursor-pointer ml-[36px] sm:ml-[36px]" 
                 onClick={handlePrevDays}
                 aria-label="Previous days"
               >
@@ -517,8 +520,8 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
               </button>
                 
               {/* Date display */}
-              <div className="flex justify-between w-[150px] mx-auto">
-                {days.slice(0, 3).map((day, index) => (
+              <div className="flex justify-between w-[120px] sm:w-[420px] md:w-[620px] lg:w-[120px] mx-auto">
+                {days.map((day, index) => (
                   <div 
                     key={index} 
                     className={`
@@ -538,7 +541,7 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
               </div>
               
               <button 
-                className="text-white cursor-pointer" 
+                className="text-white cursor-pointer mr-[36px] sm:mr-[36px]" 
                 onClick={handleNextDays}
                 aria-label="Next days"
               >
