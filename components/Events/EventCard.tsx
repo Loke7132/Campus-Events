@@ -166,7 +166,7 @@ export function EventCard({ event, isSelected, onClick, onEdit }: EventCardProps
           )}
           
           {/* Action buttons */}
-          <div className="flex items-center gap-1 sm:gap-2 mt-auto">
+          <div className="flex items-center gap-1.5 sm:gap-4 mt-auto">
             {/* RSVP Button - Always active */}
             <button 
               className="flex items-center justify-center px-2 sm:px-4 py-1 sm:py-1.5 rounded-full bg-zinc-700 text-white text-xs sm:text-sm font-medium"

@@ -501,7 +501,7 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
         </h1>
         
         {/* Date selector */}
-        <div className="flex items-center justify-center md:justify-start mt-3 sm:mt-4">
+        <div className="flex items-center justify-center md:justify-start mt-1 sm:mt-2">
           <div className="bg-black rounded-full w-full max-w-full h-[40px] flex items-center p-1">
             <div className="flex items-center justify-between w-full px-1">
               <button 
@@ -553,7 +553,7 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
       </div>
 
       {/* Events container */}
-      <div className="bg-zinc-900 rounded-3xl lg:rounded-r-none flex-1 overflow-hidden flex flex-col w-full sm:w-full md:w-full lg:w-[440px] h-auto lg:h-[799px]">
+      <div className="bg-zinc-900 rounded-3xl flex-1 overflow-hidden flex flex-col w-full sm:w-full md:w-full lg:w-[440px] h-auto lg:h-[799px]">
         {/* Events header with filter */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-center md:justify-start p-3 sm:p-4 gap-2 sm:gap-0 flex-shrink-0">
           <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-3 xl:space-x-4 flex-wrap sm:flex-nowrap w-full lg:w-[347px]">
@@ -613,7 +613,7 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
               onClick={() => setShowCustomAddEvent(true)}
             >
               <PlusIcon className="w-5 h-5 text-white" />
-              <span className="text-white font-medium text-sm">Add event</span>
+              <span className="text-white font-medium text-sm">Add Events</span>
             </button>
           </div>
         </div>
