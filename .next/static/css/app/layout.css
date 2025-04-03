@@ -716,6 +716,9 @@ video {
 .mt-auto {
   margin-top: auto;
 }
+.-mt-0\.5 {
+  margin-top: -0.125rem;
+}
 .line-clamp-2 {
   overflow: hidden;
   display: -webkit-box;
@@ -2087,6 +2090,14 @@ body {
     margin-top: 1rem;
   }
 
+  .sm\:-mt-1 {
+    margin-top: -0.25rem;
+  }
+
+  .sm\:mt-2 {
+    margin-top: 0.5rem;
+  }
+
   .sm\:block {
     display: block;
   }
@@ -2205,6 +2216,10 @@ body {
 
   .sm\:gap-3 {
     gap: 0.75rem;
+  }
+
+  .sm\:gap-4 {
+    gap: 1rem;
   }
 
   .sm\:space-x-2 > :not([hidden]) ~ :not([hidden]) {
@@ -2512,11 +2527,6 @@ body {
   .lg\:rounded-l-none {
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
-  }
-
-  .lg\:rounded-r-none {
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
   }
 
   .lg\:px-3 {
