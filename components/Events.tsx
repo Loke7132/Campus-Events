@@ -505,7 +505,7 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
           <div className="bg-black rounded-full w-full max-w-full h-[40px] flex items-center p-1">
             <div className="flex items-center justify-between w-full px-1">
               <button 
-                className={`${isDateSelected(today) ? 'bg-white text-black' : 'bg-transparent text-white'} rounded-full h-[32px] w-[98px] font-medium text-sm`}
+                className={`${isDateSelected(today) ? 'bg-white text-black' : 'bg-transparent text-white'} rounded-full h-[32px] w-[98px] font-medium text-sm -ml-1`}
                 onClick={handleSelectToday}
               >
                 Today
@@ -620,10 +620,10 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
         
         {/* Events list area */}
         <div className="flex-1 overflow-y-auto pb-6 custom-scrollbar">
-          <div className="w-full md:w-full lg:w-[347px] px-3 sm:px-4 md:px-0 md:ml-4">
+          <div className="w-full md:w-full lg:w-[399px] px-3 sm:px-4 md:px-0 md:ml-4">
             {showCustomAddEvent ? (
-              <div className="bg-zinc-800 rounded-xl mb-4">
-                <div className="flex justify-between items-center p-3 border-b border-zinc-700">
+              <div className="bg-zinc-800 rounded-xl mb-4 overflow-y-auto">
+                <div className="flex justify-between items-center p-3 border-b border-zinc-700 sticky top-0 bg-zinc-800 z-10">
                   <h3 className="text-lg font-semibold text-white">Add New Event</h3>
                   <button 
                     onClick={() => setShowCustomAddEvent(false)}
@@ -634,7 +634,7 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
                 </div>
                 
                 {/* Custom add event form */}
-                <form onSubmit={handleSubmit(onSubmit)} className="p-3 sm:p-4">
+                <form onSubmit={handleSubmit(onSubmit)} className="p-4 sm:p-6">
                   <div className="space-y-4">
                     {/* Title */}
                     <div>
@@ -813,14 +813,14 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
                       {/* Image cropper */}
                       {showCropper && imagePreview && (
                         <div className="mt-4 border border-zinc-700 rounded-lg p-3 sm:p-4">
-                          <h4 className="text-white text-sm font-medium mb-2">Crop Image (1:1.4 ratio)</h4>
+                          <h4 className="text-white text-sm font-medium mb-2">Crop Image (1.4:1 ratio)</h4>
                           <div className="flex flex-col gap-4">
                             <div className="relative flex-1">
                               <ReactCrop
                                 crop={crop}
                                 onChange={(c: Crop) => setCrop(c)}
                                 onComplete={handleCropComplete}
-                                aspect={1 / 1.4}
+                                aspect={1.4 / 1}
                                 className="max-w-full"
                               >
                                 <img 
