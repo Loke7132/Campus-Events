@@ -166,10 +166,10 @@ export function EventCard({ event, isSelected, onClick, onEdit }: EventCardProps
           )}
           
           {/* Action buttons */}
-          <div className="flex items-center gap-1.5 sm:gap-4 mt-auto">
+          <div className="flex items-center gap-2 sm:gap-4 mt-auto">
             {/* RSVP Button - Always active */}
             <button 
-              className="flex items-center justify-center px-2 sm:px-4 py-1 sm:py-1.5 rounded-full bg-zinc-700 text-white text-xs sm:text-sm font-medium"
+              className="flex items-center justify-center px-4 sm:px-4 py-2 sm:py-1.5 rounded-full bg-zinc-700 text-white text-base sm:text-sm font-medium"
               onClick={(e) => {
                 e.stopPropagation();
                 // If there's a valid RSVP link, navigate to it
@@ -185,7 +185,7 @@ export function EventCard({ event, isSelected, onClick, onEdit }: EventCardProps
             </button>
             
             <button 
-              className="flex items-center justify-center rounded-full bg-zinc-700 p-1.5 sm:p-2"
+              className="flex items-center justify-center rounded-full bg-zinc-700 p-2 sm:p-2"
               onClick={(e) => {
                 e.stopPropagation();
                 // Open location in maps if available
@@ -195,11 +195,11 @@ export function EventCard({ event, isSelected, onClick, onEdit }: EventCardProps
               }}
               title="View Location"
             >
-              <MapPinIcon className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
+              <MapPinIcon className="h-4 w-4 sm:h-4 sm:w-4 text-white" />
             </button>
             
             <button 
-              className="flex items-center justify-center rounded-full bg-zinc-700 p-1.5 sm:p-2"
+              className="flex items-center justify-center rounded-full bg-zinc-700 p-2 sm:p-2"
               onClick={(e) => {
                 e.stopPropagation();
                 // Add to calendar functionality
@@ -212,7 +212,7 @@ export function EventCard({ event, isSelected, onClick, onEdit }: EventCardProps
               }}
               title="Add to Calendar"
             >
-              <CalendarIcon className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
+              <CalendarIcon className="h-4 w-4 sm:h-4 sm:w-4 text-white" />
             </button>
           </div>
         </div>
