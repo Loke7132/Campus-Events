@@ -89,7 +89,7 @@ export function EventCard({ event, isSelected, onClick, onEdit }: EventCardProps
         onClick={onClick}
       >
         {/* Image section - square aspect ratio */}
-        <div className="w-1/3 sm:w-1/3 md:w-5/12 lg:w-1/2 aspect-square relative">
+        <div className="w-1/2 sm:w-1/3 md:w-5/12 lg:w-1/2 aspect-square relative">
           {event.image_url ? (
             <img 
               src={event.image_url}
@@ -104,17 +104,17 @@ export function EventCard({ event, isSelected, onClick, onEdit }: EventCardProps
         </div>
         
         {/* Content section */}
-        <div className="flex flex-col w-2/3 sm:w-2/3 md:w-7/12 lg:w-1/2 p-2 sm:p-3">
+        <div className="flex flex-col w-1/2 sm:w-2/3 md:w-7/12 lg:w-1/2 p-2 sm:p-3">
           <div className="flex justify-between items-start relative">
             <h3 className="text-base sm:text-lg font-semibold text-white mb-1 truncate pr-2">{event.title}</h3>
             <button 
-              className="p-1 rounded hover:bg-zinc-700" 
+              className="p-1 rounded hover:bg-zinc-700 absolute right-0 top-0 " 
               onClick={(e) => {
                 e.stopPropagation();
                 setShowDropdown(!showDropdown);
               }}
             >
-              <EllipsisVerticalIcon className="h-4 w-4 sm:h-5 sm:w-5 text-zinc-500 flex-shrink-0" />
+              <EllipsisVerticalIcon className="h-3.5 w-3.5 sm:h-5 sm:w-5 text-zinc-500 flex-shrink-0" />
             </button>
             
             {/* Dropdown menu */}
@@ -166,10 +166,10 @@ export function EventCard({ event, isSelected, onClick, onEdit }: EventCardProps
           )}
           
           {/* Action buttons */}
-          <div className="flex items-center gap-2 sm:gap-4 mt-auto">
+          <div className="flex items-center justify-between w-full mt-auto pr-0.5">
             {/* RSVP Button - Always active */}
             <button 
-              className="flex items-center justify-center px-4 sm:px-4 py-2 sm:py-1.5 rounded-full bg-zinc-700 text-white text-base sm:text-sm font-medium"
+              className="flex items-center justify-center px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-zinc-700 text-white text-xs sm:text-sm font-medium h-7 sm:h-auto"
               onClick={(e) => {
                 e.stopPropagation();
                 // If there's a valid RSVP link, navigate to it
@@ -185,7 +185,7 @@ export function EventCard({ event, isSelected, onClick, onEdit }: EventCardProps
             </button>
             
             <button 
-              className="flex items-center justify-center rounded-full bg-zinc-700 p-2 sm:p-2"
+              className="flex items-center justify-center rounded-full bg-zinc-700 p-1 sm:p-2 h-7 w-7 sm:h-auto sm:w-auto"
               onClick={(e) => {
                 e.stopPropagation();
                 // Open location in maps if available
@@ -195,11 +195,11 @@ export function EventCard({ event, isSelected, onClick, onEdit }: EventCardProps
               }}
               title="View Location"
             >
-              <MapPinIcon className="h-4 w-4 sm:h-4 sm:w-4 text-white" />
+              <MapPinIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
             </button>
             
             <button 
-              className="flex items-center justify-center rounded-full bg-zinc-700 p-2 sm:p-2"
+              className="flex items-center justify-center rounded-full bg-zinc-700 p-1 sm:p-2 h-7 w-7 sm:h-auto sm:w-auto"
               onClick={(e) => {
                 e.stopPropagation();
                 // Add to calendar functionality
@@ -212,7 +212,7 @@ export function EventCard({ event, isSelected, onClick, onEdit }: EventCardProps
               }}
               title="Add to Calendar"
             >
-              <CalendarIcon className="h-4 w-4 sm:h-4 sm:w-4 text-white" />
+              <CalendarIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
             </button>
           </div>
         </div>
