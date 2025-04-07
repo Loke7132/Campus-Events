@@ -947,6 +947,7 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
                 {filteredEvents.map(event => (
                   <div 
                     key={event.id}
+                    id={`event-${event.id}`}
                     ref={event.id === selectedEvent ? selectedEventRef : null}
                     className="w-full"
                   >

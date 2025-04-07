@@ -5,6 +5,7 @@ import { supabase, type EventData } from '@/lib/supabase';
 import Map from '@/components/Map';
 import Loading from '@/components/Loading';
 import Events from '@/components/Events';
+import { MapIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
 async function getUserLocation(): Promise<[number, number] | null> {
   return new Promise((resolve) => {
@@ -33,14 +34,57 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
+  const [showMapOnMobile, setShowMapOnMobile] = useState(false);
 
   const handleEventSelect = (eventId: string) => {
+    // If clicking the same event again, deselect it
     if (selectedEvent === eventId) {
       setSelectedEvent(null);
     } else {
       setSelectedEvent(eventId);
+      
+      // Check if this is mobile view
+      if (typeof window !== 'undefined' && window.innerWidth < 431) {
+        // If the event is being clicked from the map, switch to event list
+        if (showMapOnMobile) {
+          setShowMapOnMobile(false);
+        } 
+        // If the event is being clicked from the list, switch to map view
+        else {
+          // Small delay to let the selection highlight appear before switching views
+          setTimeout(() => {
+            setShowMapOnMobile(true);
+          }, 150);
+        }
+      }
     }
   };
+
+  // Effect to handle window resize for responsive behavior
+  useEffect(() => {
+    const handleResize = () => {
+      // If screen becomes larger than 431px, ensure we're not in mobile map mode
+      if (window.innerWidth >= 431) {
+        setShowMapOnMobile(false);
+      }
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Effect to scroll to selected event in the list when switching back from map view
+  useEffect(() => {
+    if (!showMapOnMobile && selectedEvent) {
+      // Find the selected event element and scroll to it
+      setTimeout(() => {
+        const selectedEventElement = document.getElementById(`event-${selectedEvent}`);
+        if (selectedEventElement) {
+          selectedEventElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 100); // Short delay to ensure DOM is updated
+    }
+  }, [showMapOnMobile, selectedEvent]);
 
   useEffect(() => {
     async function init() {
@@ -130,8 +174,20 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-black overflow-hidden p-[28px]">
       <div className="h-[calc(100vh-56px)] overflow-hidden">
-        <div className="flex flex-col lg:flex-row gap-0 h-full overflow-hidden">
-          <div className="h-[60vh] sm:h-[55vh] md:h-[50vh] lg:h-full lg:w-[435px] xl:w-[38%] 2xl:w-[28%] overflow-y-auto overflow-x-hidden order-2 lg:order-1 relative lg:pr-0">
+        <div className={`flex flex-col lg:flex-row gap-0 h-full overflow-hidden ${showMapOnMobile ? 'max-[431px]:h-full' : ''}`}>
+          {/* Map toggle button for small screens */}
+          <div className={`fixed bottom-6 left-0 right-0 z-10 ${showMapOnMobile ? 'hidden' : 'max-[431px]:flex hidden'} justify-center`}>
+            <button 
+              onClick={() => setShowMapOnMobile(!showMapOnMobile)}
+              className="bg-orange-500 text-white py-2.5 px-4 rounded-full shadow-lg flex items-center gap-2 transition-all hover:bg-orange-600 active:bg-orange-700"
+              aria-label="Toggle Map View"
+            >
+              <MapIcon className="w-5 h-5" />
+              <span className="font-medium text-sm">View Map</span>
+            </button>
+          </div>
+
+          <div className={`h-[60vh] sm:h-[55vh] md:h-[50vh] lg:h-full lg:w-[435px] xl:w-[38%] 2xl:w-[28%] overflow-y-auto overflow-x-hidden order-2 lg:order-1 relative lg:pr-0 max-[431px]:h-[calc(100vh-110px)] ${showMapOnMobile && 'max-[431px]:hidden'}`}>
             <Events 
               events={events} 
               selectedEvent={selectedEvent} 
@@ -171,7 +227,17 @@ export default function Home() {
               }}
             />
           </div>
-          <div className="h-[40vh] sm:h-[45vh] md:h-[50vh] lg:h-full lg:w-[55%] xl:w-[65%] 2xl:w-[73%] overflow-hidden order-1 lg:order-2 relative lg:pl-0 lg:-ml-[2px] mb-4 lg:mb-0">
+          <div className={`h-[40vh] sm:h-[45vh] md:h-[50vh] lg:h-full lg:w-[55%] xl:w-[65%] 2xl:w-[73%] overflow-hidden order-1 lg:order-2 relative lg:pl-0 lg:-ml-[2px] mb-4 lg:mb-0 ${!showMapOnMobile && 'max-[431px]:hidden'} ${showMapOnMobile && 'max-[431px]:h-[calc(100vh-56px)] max-[431px]:w-full max-[431px]:mb-0'}`}>
+            {/* Close Map button for small screens */}
+            <div className="absolute top-4 right-4 z-10 max-[431px]:block hidden">
+              <button 
+                onClick={() => setShowMapOnMobile(false)}
+                className="bg-zinc-800 text-white p-2 rounded-full shadow-lg"
+                aria-label="Close Map View"
+              >
+                <XMarkIcon className="w-5 h-5" />
+              </button>
+            </div>
             <Map 
               events={events} 
               selectedEvent={selectedEvent} 
