@@ -525,8 +525,8 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
                   <div 
                     key={index} 
                     className={`
-                      flex flex-col items-center justify-center cursor-pointer
-                      ${isDateSelected(day) ? 'bg-white text-black rounded-full px-2' : ''}
+                      flex flex-col items-center justify-center cursor-pointer h-[40px] w-[40px]
+                      ${isDateSelected(day) ? 'bg-white text-black rounded-full' : ''}
                     `}
                     onClick={() => day >= today && handleSelectDate(day)}
                   >
@@ -556,64 +556,66 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
       <div className="bg-zinc-900 rounded-3xl flex-1 overflow-hidden flex flex-col w-full sm:w-full md:w-full lg:w-[440px] h-auto lg:h-[799px]">
         {/* Events header with filter */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-center md:justify-start p-3 sm:p-4 gap-2 sm:gap-0 flex-shrink-0">
-          <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-3 xl:space-x-4 flex-wrap sm:flex-nowrap w-full lg:w-[347px]">
-            {/* Add search box - smaller for screen sizes 1024px-1635px */}
-            <div className="relative">
-              <input
-                type="text"
-                placeholder={searchPlaceholder}
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-[157px] h-[39px] bg-zinc-800 text-white text-sm rounded-full pl-8 pr-3 py-2 placeholder-white focus:outline-none focus:ring-1 focus:ring-orange-500"
-              />
-              <MagnifyingGlassIcon
-                className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white"
-              />
-            </div>
-            
-            <Popover>
-              <PopoverTrigger asChild>
-                <button 
-                  className="flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-3 md:px-4 lg:px-3 xl:px-3 2xl:px-4 py-1.5 sm:py-2 rounded-full bg-orange-500 h-[32px] sm:h-[38px] lg:h-[40px] flex-shrink-0"
-                  onClick={() => setFilterOpen(!filterOpen)}
-                >
-                  <FunnelIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white" /> 
-                  <ChevronDownIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white hidden sm:block" />
-                </button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto bg-zinc-800 border-zinc-700" align="end">
-                <div className="flex flex-col gap-2">
-                  <label className="flex items-center space-x-2 cursor-pointer border-b border-zinc-700 pb-2">
-                    <input
-                      type="checkbox"
-                      checked={allSelected}
-                      onChange={() => handleTypeToggle('All')}
-                      className="rounded bg-zinc-700 border-zinc-600 text-orange-500 focus:ring-orange-500"
-                    />
-                    <span className="text-sm text-white">All</span>
-                  </label>
-                  {eventTypes.map((type) => (
-                    <label key={type} className="flex items-center space-x-2 cursor-pointer">
+          <div className="flex items-center justify-between sm:justify-between w-full max-w-full md:max-w-full lg:w-[440px]">
+            <div className="flex items-center gap-10 md:gap-6 max-[390px]:mr-1">
+              {/* Search box */}
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder={searchPlaceholder}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-[157px] h-[39px] max-[450px]:w-[120px] max-[450px]:h-[40px] max-[450px]:text-xs max-[450px]:py-1.5 bg-zinc-800 text-white text-sm rounded-full pl-8 pr-3 py-2 placeholder-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                />
+                <MagnifyingGlassIcon
+                  className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white"
+                />
+              </div>
+              
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button 
+                    className="flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-3 md:px-4 lg:px-3 xl:px-3 2xl:px-4 py-1.5 sm:py-2 rounded-full bg-orange-500 h-[32px] sm:h-[38px] lg:h-[40px] max-[450px]:h-[40px] max-[450px]:px-1.5 flex-shrink-0"
+                    onClick={() => setFilterOpen(!filterOpen)}
+                  >
+                    <FunnelIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white" /> 
+                    <ChevronDownIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white hidden sm:block" />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto bg-zinc-800 border-zinc-700" align="end">
+                  <div className="flex flex-col gap-2">
+                    <label className="flex items-center space-x-2 cursor-pointer border-b border-zinc-700 pb-2">
                       <input
                         type="checkbox"
-                        checked={selectedTypes.includes(type)}
-                        onChange={() => handleTypeToggle(type)}
+                        checked={allSelected}
+                        onChange={() => handleTypeToggle('All')}
                         className="rounded bg-zinc-700 border-zinc-600 text-orange-500 focus:ring-orange-500"
                       />
-                      <span className="text-sm text-white">{type}</span>
+                      <span className="text-sm text-white">All</span>
                     </label>
-                  ))}
-                </div>
-              </PopoverContent>
-            </Popover>
+                    {eventTypes.map((type) => (
+                      <label key={type} className="flex items-center space-x-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={selectedTypes.includes(type)}
+                          onChange={() => handleTypeToggle(type)}
+                          className="rounded bg-zinc-700 border-zinc-600 text-orange-500 focus:ring-orange-500"
+                        />
+                        <span className="text-sm text-white">{type}</span>
+                      </label>
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </div>
             
             {/* Button to open the Add Event modal */}
             <button 
-              className="flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-orange-500 rounded-full h-[40px] flex-shrink-0 whitespace-nowrap ml-auto md:ml-2"
+              className="flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-orange-500 rounded-full h-[40px] max-[450px]:h-[40px] max-[450px]:px-2 flex-shrink-0 whitespace-nowrap"
               onClick={() => setShowCustomAddEvent(true)}
             >
-              <PlusIcon className="w-5 h-5 text-white" />
-              <span className="text-white font-medium text-sm">Add Events</span>
+              <PlusIcon className="w-5 h-5 max-[450px]:w-4 max-[450px]:h-4 text-white" />
+              <span className="text-white font-medium text-sm max-[450px]:text-xs">Add Events</span>
             </button>
           </div>
         </div>
@@ -813,14 +815,14 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
                       {/* Image cropper */}
                       {showCropper && imagePreview && (
                         <div className="mt-4 border border-zinc-700 rounded-lg p-3 sm:p-4">
-                          <h4 className="text-white text-sm font-medium mb-2">Crop Image (1.4:1 ratio)</h4>
+                          <h4 className="text-white text-sm font-medium mb-2">Crop Image (1:1.4 ratio)</h4>
                           <div className="flex flex-col gap-4">
                             <div className="relative flex-1">
                               <ReactCrop
                                 crop={crop}
                                 onChange={(c: Crop) => setCrop(c)}
                                 onComplete={handleCropComplete}
-                                aspect={1.4 / 1}
+                                aspect={1 / 1.4}
                                 className="max-w-full"
                               >
                                 <img 
@@ -945,6 +947,7 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
                 {filteredEvents.map(event => (
                   <div 
                     key={event.id}
+                    id={`event-${event.id}`}
                     ref={event.id === selectedEvent ? selectedEventRef : null}
                     className="w-full"
                   >
