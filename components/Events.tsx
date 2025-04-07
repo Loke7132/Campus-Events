@@ -557,7 +557,7 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
         {/* Events header with filter */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-center md:justify-start p-3 sm:p-4 gap-2 sm:gap-0 flex-shrink-0">
           <div className="flex items-center justify-between sm:justify-between w-full max-w-full md:max-w-full lg:w-[440px]">
-            <div className="flex items-center gap-14 md:gap-6">
+            <div className="flex items-center gap-10 md:gap-6 max-[390px]:mr-1">
               {/* Search box */}
               <div className="relative">
                 <input
@@ -565,7 +565,7 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
                   placeholder={searchPlaceholder}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-[157px] h-[39px] max-[397px]:w-[120px] max-[397px]:h-[32px] max-[397px]:text-xs max-[397px]:py-1.5 bg-zinc-800 text-white text-sm rounded-full pl-8 pr-3 py-2 placeholder-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                  className="w-[157px] h-[39px] max-[450px]:w-[120px] max-[450px]:h-[32px] max-[450px]:text-xs max-[450px]:py-1.5 bg-zinc-800 text-white text-sm rounded-full pl-8 pr-3 py-2 placeholder-white focus:outline-none focus:ring-1 focus:ring-orange-500"
                 />
                 <MagnifyingGlassIcon
                   className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white"
@@ -575,7 +575,7 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
               <Popover>
                 <PopoverTrigger asChild>
                   <button 
-                    className="flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-3 md:px-4 lg:px-3 xl:px-3 2xl:px-4 py-1.5 sm:py-2 rounded-full bg-orange-500 h-[32px] sm:h-[38px] lg:h-[40px] max-[397px]:h-[32px] max-[397px]:px-1.5 flex-shrink-0"
+                    className="flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-3 md:px-4 lg:px-3 xl:px-3 2xl:px-4 py-1.5 sm:py-2 rounded-full bg-orange-500 h-[32px] sm:h-[38px] lg:h-[40px] max-[450px]:h-[32px] max-[450px]:px-1.5 flex-shrink-0"
                     onClick={() => setFilterOpen(!filterOpen)}
                   >
                     <FunnelIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white" /> 
@@ -611,11 +611,11 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
             
             {/* Button to open the Add Event modal */}
             <button 
-              className="flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-orange-500 rounded-full h-[40px] max-[397px]:h-[32px] max-[397px]:px-2 flex-shrink-0 whitespace-nowrap"
+              className="flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-orange-500 rounded-full h-[40px] max-[450px]:h-[32px] max-[450px]:px-2 flex-shrink-0 whitespace-nowrap"
               onClick={() => setShowCustomAddEvent(true)}
             >
-              <PlusIcon className="w-5 h-5 max-[397px]:w-4 max-[397px]:h-4 text-white" />
-              <span className="text-white font-medium text-sm max-[397px]:text-xs">Add Events</span>
+              <PlusIcon className="w-5 h-5 max-[450px]:w-4 max-[450px]:h-4 text-white" />
+              <span className="text-white font-medium text-sm max-[450px]:text-xs">Add Events</span>
             </button>
           </div>
         </div>
