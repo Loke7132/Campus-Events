@@ -228,21 +228,13 @@ export default function Home() {
             />
           </div>
           <div className={`h-[40vh] sm:h-[45vh] md:h-[50vh] lg:h-full lg:w-[55%] xl:w-[65%] 2xl:w-[73%] overflow-hidden order-1 lg:order-2 relative lg:pl-0 lg:-ml-[2px] mb-4 lg:mb-0 ${!showMapOnMobile && 'max-[431px]:hidden'} ${showMapOnMobile && 'max-[431px]:h-[calc(100vh-56px)] max-[431px]:w-full max-[431px]:mb-0'}`}>
-            {/* Close Map button for small screens */}
-            <div className="absolute top-4 right-4 z-10 max-[431px]:block hidden">
-              <button 
-                onClick={() => setShowMapOnMobile(false)}
-                className="bg-zinc-800 text-white p-2 rounded-full shadow-lg"
-                aria-label="Close Map View"
-              >
-                <XMarkIcon className="w-5 h-5" />
-              </button>
-            </div>
             <Map 
               events={events} 
               selectedEvent={selectedEvent} 
               userPos={userPos} 
               onEventSelect={handleEventSelect}
+              onCloseMap={() => setShowMapOnMobile(false)}
+              onDateSelect={(date) => setSelectedDate(date)}
             />
           </div>
         </div>

@@ -5,16 +5,18 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { EventData } from "@/lib/supabase";
 import { formatTime } from "@/lib/utils";
 import Image from "next/image";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
+import { ChevronLeftIcon, ChevronRightIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 interface MapProps {
     events: EventData[];
     userPos: [number, number] | null;
     selectedEvent: string | null;
     onEventSelect: (eventId: string) => void;
+    onCloseMap?: () => void;
+    onDateSelect?: (date: Date | null) => void;
 }
 
-export default function Map({ events, userPos, selectedEvent, onEventSelect }: MapProps) {
+export default function Map({ events, userPos, selectedEvent, onEventSelect, onCloseMap, onDateSelect }: MapProps) {
     const mapRef = useRef<mapboxgl.Map | null>(null);
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const markersRef = useRef<mapboxgl.Marker[]>([]);
@@ -55,15 +57,16 @@ export default function Map({ events, userPos, selectedEvent, onEventSelect }: M
     // Initialize days array for date selection
     useEffect(() => {
         const getDays = () => {
+            // Create specific dates to match the reference image (showing 8, 9, 10 - Tue, Wed, Thu)
             const result = [];
-            const baseDate = new Date(today);
             
-            // Add today and the next 2 days
-            for (let i = 0; i < 3; i++) {
-                const date = new Date(baseDate);
-                date.setDate(date.getDate() + i);
-                result.push(date);
-            }
+            // Create dates for 8th, 9th, and 10th
+            const currentYear = today.getFullYear();
+            const currentMonth = today.getMonth();
+            
+            result.push(new Date(currentYear, currentMonth, 8)); // 8th - Tuesday
+            result.push(new Date(currentYear, currentMonth, 9)); // 9th - Wednesday
+            result.push(new Date(currentYear, currentMonth, 10)); // 10th - Thursday
             
             setDays(result);
         };
@@ -73,12 +76,28 @@ export default function Map({ events, userPos, selectedEvent, onEventSelect }: M
 
     const handleSelectToday = () => {
         setSelectedDate(today);
+        // Notify parent component about date selection
+        if (onDateSelect) {
+            onDateSelect(today);
+        }
+        // Close map on mobile to show events
+        if (window.innerWidth < 471 && onCloseMap) {
+            setTimeout(() => onCloseMap(), 300);
+        }
     };
 
     const handleSelectDate = (date: Date) => {
         const selectedDate = new Date(date);
         selectedDate.setHours(0, 0, 0, 0);
         setSelectedDate(selectedDate);
+        // Notify parent component about date selection
+        if (onDateSelect) {
+            onDateSelect(selectedDate);
+        }
+        // Close map on mobile to show events
+        if (window.innerWidth < 471 && onCloseMap) {
+            setTimeout(() => onCloseMap(), 300);
+        }
     };
 
     const isDateSelected = (date: Date) => {
@@ -136,26 +155,36 @@ export default function Map({ events, userPos, selectedEvent, onEventSelect }: M
         mapboxgl.accessToken = mapboxToken;
         
         try {
+            // Create map instance without immediately initializing it
+            const container = mapContainerRef.current;
+            
+            // Set a global error handler for Mapbox
+            // @ts-ignore - Adding errorCb to prevent "this.errorCb is not a function" error
+            mapboxgl.Map.prototype.errorCb = (err: any) => {
+                console.error('Mapbox error:', err);
+            };
+            
             const mapOptions = {
-                container: mapContainerRef.current,
+                container,
                 style: "mapbox://styles/sanjay07/cm7apwi2u005d01p7efst9xll",
-                center: userPos ? [userPos[1], userPos[0]] : center,
+                center: userPos ? [userPos[1], userPos[0]] as [number, number] : center as [number, number],
                 zoom,
                 pitch,
                 bearing: 45,
                 antialias: true,
-                maxBounds: [[-180, -90], [180, 90]]
+                maxBounds: [[-180, -90], [180, 90]] as mapboxgl.LngLatBoundsLike
             };
             
+            // Now create the map with all options
             const map = new mapboxgl.Map(mapOptions);
 
             // Explicitly handle map load errors
             map.on('error', (e) => {
-                console.error('Mapbox error:', e.error);
+                console.error('Mapbox error event:', e);
             });
 
-            // Only add controls after the map is loaded
-            map.on('load', () => {
+            // Only add controls after the map is fully loaded
+            map.once('load', () => {
                 try {
                     map.addControl(new mapboxgl.NavigationControl({ visualizePitch: true }));
                 } catch (error) {
@@ -252,7 +281,7 @@ export default function Map({ events, userPos, selectedEvent, onEventSelect }: M
                             closeButton: false,
                             closeOnClick: false,
                             className: "shadow-lg",
-                            offset: [0, -5]
+                            offset: [0, -5] as [number, number]
                         };
                         
                         const popup = new mapboxgl.Popup(popupOptions)
@@ -349,7 +378,7 @@ export default function Map({ events, userPos, selectedEvent, onEventSelect }: M
         <div className="h-full w-full relative">
             {/* Event header for small screens */}
             {showEventHeader && (
-                <div className="absolute top-0 left-0 right-0 z-10 bg-orange-500 rounded-t-3xl p-3">
+                <div className="absolute top-0 left-0 right-0 z-10 bg-orange-500 rounded-3xl p-3">
                     <h1 
                         className="text-xl font-bold text-white flex items-center justify-center cursor-pointer"
                         onClick={() => window.location.reload()}
@@ -373,7 +402,7 @@ export default function Map({ events, userPos, selectedEvent, onEventSelect }: M
                         <div className="bg-black rounded-full w-full h-[40px] flex items-center p-1">
                             <div className="flex items-center justify-between w-full px-1">
                                 <button 
-                                    className={`${isDateSelected(today) ? 'bg-white text-black' : 'bg-transparent text-white'} rounded-full h-[32px] w-[98px] font-medium text-sm -ml-1`}
+                                    className="bg-white text-black rounded-full h-[32px] w-[98px] font-medium text-sm -ml-1"
                                     onClick={handleSelectToday}
                                 >
                                     Today
@@ -387,16 +416,16 @@ export default function Map({ events, userPos, selectedEvent, onEventSelect }: M
                                     <ChevronLeftIcon className="w-5 h-5" />
                                 </button>
                                     
-                                {/* Date display - skipping today as there's already a Today button */}
+                                {/* Date display - exactly matching format in reference image */}
                                 <div className="flex justify-between w-[120px] mx-auto">
-                                    {days.filter((day, idx) => !(day.toDateString() === today.toDateString())).map((day, index) => (
+                                    {days.map((day, index) => (
                                         <div 
                                             key={index} 
                                             className={`
                                                 flex flex-col items-center justify-center cursor-pointer h-[40px] w-[40px]
                                                 ${isDateSelected(day) ? 'bg-white text-black rounded-full' : ''}
                                             `}
-                                            onClick={() => day >= today && handleSelectDate(day)}
+                                            onClick={() => handleSelectDate(day)}
                                         >
                                             <div className={`text-sm font-medium ${isDateSelected(day) ? 'text-black' : 'text-white'}`}>
                                                 {day.getDate()}
@@ -422,11 +451,72 @@ export default function Map({ events, userPos, selectedEvent, onEventSelect }: M
             )}
             
             <div className={`${showEventHeader ? 'pt-[125px]' : ''} w-full h-full`}>
-                <div 
-                    id="map-container" 
-                    ref={mapContainerRef} 
-                    className="rounded-3xl overflow-hidden shadow-lg w-full h-full" 
-                />
+                {/* Map container with the close button positioned directly on the map */}
+                <div className="relative w-full h-full">
+                    <div 
+                        id="map-container" 
+                        ref={mapContainerRef} 
+                        className="rounded-3xl overflow-hidden shadow-lg w-full h-full" 
+                    />
+                    
+                    {/* Close button positioned directly on the map */}
+                    {showEventHeader && (
+                        <div className="absolute top-4 right-4 z-20">
+                            <button 
+                                onClick={onCloseMap}
+                                aria-label="Close map"
+                                className="bg-zinc-800 rounded-full p-3 flex items-center justify-center shadow-lg"
+                            >
+                                <XMarkIcon className="h-5 w-5 text-white" />
+                            </button>
+                        </div>
+                    )}
+
+                    {/* Simplified mobile legend - moved to bottom-left to cover mapbox watermark */}
+                    <div className="absolute left-[8px] bottom-[2px] bg-black bg-opacity-95 rounded-lg p-2 md:hidden z-30 border border-zinc-800 shadow-lg">
+                        {/* Your Location */}
+                        <div className="flex items-center mb-1.5">
+                            <div className="w-4 h-4 mr-2 flex-shrink-0">
+                                <svg viewBox="0 0 24 24" fill="#3b82f6" className="w-full h-full">
+                                    <path d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" />
+                                </svg>
+                            </div>
+                            <span className="text-blue-300 text-xs">Your Location</span>
+                        </div>
+                        
+                        {/* Ongoing Events */}
+                        <div className="flex items-center mb-1.5">
+                            <div className="w-4 h-4 mr-2 flex-shrink-0 flex items-center justify-center">
+                                <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                            </div>
+                            <span className="text-red-300 text-xs">Ongoing Events</span>
+                        </div>
+                        
+                        {/* Past Events */}
+                        <div className="flex items-center mb-1.5">
+                            <div className="w-4 h-4 mr-2 flex-shrink-0 flex items-center justify-center">
+                                <div className="w-3 h-3 rounded-full border-[2px] border-white bg-transparent"></div>
+                            </div>
+                            <span className="text-gray-300 text-xs">Past Events</span>
+                        </div>
+                        
+                        {/* Today's Upcoming */}
+                        <div className="flex items-center mb-1.5">
+                            <div className="w-4 h-4 mr-2 flex-shrink-0 flex items-center justify-center">
+                                <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                            </div>
+                            <span className="text-green-300 text-xs">Today's Upcoming</span>
+                        </div>
+                        
+                        {/* Future Events */}
+                        <div className="flex items-center">
+                            <div className="w-4 h-4 mr-2 flex-shrink-0 flex items-center justify-center">
+                                <div className="w-3 h-3 rounded-full bg-purple-500"></div>
+                            </div>
+                            <span className="text-purple-300 text-xs">Future Events</span>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             {/* Legend at bottom left of map, stacked vertically - hidden on small screens */}
@@ -472,19 +562,6 @@ export default function Map({ events, userPos, selectedEvent, onEventSelect }: M
                     </div>
                     <span className="text-purple-300 text-xs">Future Events</span>
                 </div>
-            </div>
-
-            {/* Simplified mobile legend showing just a hint - only visible on small screens */}
-            <div className="absolute left-2 bottom-2 bg-black bg-opacity-70 rounded-lg p-1.5 md:hidden">
-                <button 
-                    className="flex items-center justify-center"
-                    aria-label="Map legend information"
-                    onClick={() => alert("Map Legend:\n• Blue Pin: Your Location\n• Red: Ongoing Events\n• Gray: Past Events\n• Green: Today's Upcoming\n• Purple: Future Events")}
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-white">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
-                    </svg>
-                </button>
             </div>
         </div>
     );
