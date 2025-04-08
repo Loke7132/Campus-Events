@@ -41,7 +41,8 @@ export default function Map({ events, userPos, selectedEvent, onEventSelect, onC
     // Check if screen width is less than 471px and update showEventHeader state
     useEffect(() => {
         const handleResize = () => {
-            setShowEventHeader(window.innerWidth < 471);
+            // Only show header if width is less than 432px, hiding it for 432-471px range
+            setShowEventHeader(window.innerWidth < 432);
         };
         
         // Set initial value
@@ -409,7 +410,7 @@ export default function Map({ events, userPos, selectedEvent, onEventSelect, onC
                                 </button>
                                 
                                 <button 
-                                    className="text-white cursor-pointer ml-[36px]" 
+                                    className="text-white cursor-pointer ml-[36px] max-[432px]:ml-[15px]" 
                                     onClick={handlePrevDays}
                                     aria-label="Previous days"
                                 >
@@ -417,7 +418,7 @@ export default function Map({ events, userPos, selectedEvent, onEventSelect, onC
                                 </button>
                                     
                                 {/* Date display - exactly matching format in reference image */}
-                                <div className="flex justify-between w-[120px] mx-auto">
+                                <div className="flex justify-between w-[120px] mx-auto max-[432px]:mx-[15px]">
                                     {days.map((day, index) => (
                                         <div 
                                             key={index} 
@@ -438,7 +439,7 @@ export default function Map({ events, userPos, selectedEvent, onEventSelect, onC
                                 </div>
                                 
                                 <button 
-                                    className="text-white cursor-pointer mr-[36px]" 
+                                    className="text-white cursor-pointer mr-[36px] max-[432px]:mr-[15px]" 
                                     onClick={handleNextDays}
                                     aria-label="Next days"
                                 >

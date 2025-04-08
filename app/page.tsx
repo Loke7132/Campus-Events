@@ -86,6 +86,16 @@ export default function Home() {
     }
   }, [showMapOnMobile, selectedEvent]);
 
+  // Effect to handle toggleMapView event from the Events component
+  useEffect(() => {
+    const handleToggleMapView = () => {
+      setShowMapOnMobile(!showMapOnMobile);
+    };
+    
+    window.addEventListener('toggleMapView', handleToggleMapView);
+    return () => window.removeEventListener('toggleMapView', handleToggleMapView);
+  }, [showMapOnMobile]);
+
   useEffect(() => {
     async function init() {
       try {
@@ -172,22 +182,12 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-black overflow-hidden p-[28px]">
-      <div className="h-[calc(100vh-56px)] overflow-hidden">
+    <div className="flex flex-col min-h-screen bg-black overflow-hidden p-[28px] max-[432px]:p-[20px]">
+      <div className="h-[calc(100vh-56px)] max-[432px]:h-[calc(100vh-40px)] overflow-hidden">
         <div className={`flex flex-col lg:flex-row gap-0 h-full overflow-hidden ${showMapOnMobile ? 'max-[431px]:h-full' : ''}`}>
-          {/* Map toggle button for small screens */}
-          <div className={`fixed bottom-6 left-0 right-0 z-10 ${showMapOnMobile ? 'hidden' : 'max-[431px]:flex hidden'} justify-center`}>
-            <button 
-              onClick={() => setShowMapOnMobile(!showMapOnMobile)}
-              className="bg-orange-500 text-white py-2.5 px-4 rounded-full shadow-lg flex items-center gap-2 transition-all hover:bg-orange-600 active:bg-orange-700"
-              aria-label="Toggle Map View"
-            >
-              <MapIcon className="w-5 h-5" />
-              <span className="font-medium text-sm">View Map</span>
-            </button>
-          </div>
+          {/* Map toggle button removed since it's now inside Events component */}
 
-          <div className={`h-[60vh] sm:h-[55vh] md:h-[50vh] lg:h-full lg:w-[435px] xl:w-[38%] 2xl:w-[28%] overflow-y-auto overflow-x-hidden order-2 lg:order-1 relative lg:pr-0 max-[431px]:h-[calc(100vh-110px)] ${showMapOnMobile && 'max-[431px]:hidden'}`}>
+          <div className={`h-[60vh] sm:h-[55vh] md:h-[50vh] lg:h-full lg:w-[435px] xl:w-[38%] 2xl:w-[28%] overflow-y-auto overflow-x-hidden order-2 lg:order-1 relative lg:pr-0 max-[431px]:h-full ${showMapOnMobile && 'max-[431px]:hidden'}`}>
             <Events 
               events={events} 
               selectedEvent={selectedEvent} 

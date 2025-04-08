@@ -460,7 +460,9 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
   useEffect(() => {
     const handleResize = () => {
       if (typeof window !== 'undefined') {
-        if (window.innerWidth >= 1024 && window.innerWidth <= 1635) {
+        if (window.innerWidth < 432) {
+          setSearchPlaceholder("Search");
+        } else if (window.innerWidth >= 1024 && window.innerWidth <= 1635) {
           setSearchPlaceholder("Search...");
         } else {
           setSearchPlaceholder("Search events...");
@@ -512,7 +514,7 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
               </button>
               
               <button 
-                className="text-white cursor-pointer ml-[36px] sm:ml-[36px]" 
+                className="text-white cursor-pointer ml-[36px] sm:ml-[36px] max-[432px]:ml-[15px]" 
                 onClick={handlePrevDays}
                 aria-label="Previous days"
               >
@@ -520,7 +522,7 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
               </button>
                 
               {/* Date display */}
-              <div className="flex justify-between w-[120px] sm:w-[420px] md:w-[620px] lg:w-[120px] mx-auto">
+              <div className="flex justify-between w-[120px] sm:w-[420px] md:w-[620px] lg:w-[120px] mx-auto max-[432px]:mx-[15px]">
                 {days.map((day, index) => (
                   <div 
                     key={index} 
@@ -530,7 +532,7 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
                     `}
                     onClick={() => day >= today && handleSelectDate(day)}
                   >
-                    <div className={`text-sm font-medium ${isDateSelected(day) ? 'text-black' : 'text-white'}`}>
+                    <div className={`text-sm font-medium ${isDateSelected(day) ? 'text-black' : 'text-gray-400'}`}>
                       {day.getDate()}
                     </div>
                     <div className={`text-xs ${isDateSelected(day) ? 'text-black' : 'text-gray-400'}`}>
@@ -541,7 +543,7 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
               </div>
               
               <button 
-                className="text-white cursor-pointer mr-[36px] sm:mr-[36px]" 
+                className="text-white cursor-pointer mr-[36px] sm:mr-[36px] max-[432px]:mr-[15px]" 
                 onClick={handleNextDays}
                 aria-label="Next days"
               >
@@ -553,10 +555,80 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
       </div>
 
       {/* Events container */}
-      <div className="bg-zinc-900 rounded-3xl flex-1 overflow-hidden flex flex-col w-full sm:w-full md:w-full lg:w-[440px] h-auto lg:h-[799px] max-[471px]:mt-[20px]">
+      <div className="bg-zinc-900 rounded-3xl flex-1 overflow-hidden flex flex-col w-full sm:w-full md:w-full lg:w-[440px] h-auto lg:h-[799px] max-[471px]:mt-[20px] relative">
         {/* Events header with filter */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-center md:justify-start p-3 sm:p-4 gap-2 sm:gap-0 flex-shrink-0 max-[471px]:px-3 max-[471px]:pb-0">
-          <div className="flex items-center justify-between w-full">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-center md:justify-start p-3 sm:p-4 gap-2 sm:gap-0 flex-shrink-0 max-[471px]:px-3 max-[471px]:pb-0 max-[432px]:px-[12px]">
+          {/* Special layout for very small screens (<432px) */}
+          <div className="hidden max-[432px]:flex max-[432px]:flex-row max-[432px]:items-center max-[432px]:w-full max-[432px]:h-[40px] max-[432px]:justify-between">
+            {/* Search box - 112px */}
+            <div className="w-[112px]">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder={searchPlaceholder}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full h-[40px] text-xs py-1.5 bg-zinc-800 text-white text-sm rounded-full pl-8 pr-1 placeholder-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+                />
+                <MagnifyingGlassIcon
+                  className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white"
+                />
+              </div>
+            </div>
+            
+            {/* Filter Button - 74px */}
+            <div className="w-[74px]">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button 
+                    className="w-[74px] h-[40px] flex items-center justify-center gap-1 px-1.5 py-1.5 rounded-full bg-orange-500 flex-shrink-0"
+                    onClick={() => setFilterOpen(!filterOpen)}
+                  >
+                    <FunnelIcon className="w-4 h-4 text-white" /> 
+                    <ChevronDownIcon className="w-4 h-4 text-white" />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto bg-zinc-800 border-zinc-700" align="end">
+                  <div className="flex flex-col gap-2">
+                    <label className="flex items-center space-x-2 cursor-pointer border-b border-zinc-700 pb-2">
+                      <input
+                        type="checkbox"
+                        checked={allSelected}
+                        onChange={() => handleTypeToggle('All')}
+                        className="rounded bg-zinc-700 border-zinc-600 text-orange-500 focus:ring-orange-500"
+                      />
+                      <span className="text-sm text-white">All</span>
+                    </label>
+                    {eventTypes.map((type) => (
+                      <label key={type} className="flex items-center space-x-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={selectedTypes.includes(type)}
+                          onChange={() => handleTypeToggle(type)}
+                          className="rounded bg-zinc-700 border-zinc-600 text-orange-500 focus:ring-orange-500"
+                        />
+                        <span className="text-sm text-white">{type}</span>
+                      </label>
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </div>
+            
+            {/* Button to open the Add Event modal - 117px */}
+            <div className="w-[117px]">
+              <button 
+                className="w-full h-[40px] flex items-center justify-center gap-1 px-2 py-1.5 bg-orange-500 rounded-full flex-shrink-0 whitespace-nowrap"
+                onClick={() => setShowCustomAddEvent(true)}
+              >
+                <PlusIcon className="w-4 h-4 text-white" />
+                <span className="text-white font-medium text-xs">Add Events</span>
+              </button>
+            </div>
+          </div>
+          
+          {/* Regular layout for larger screens (≥432px) */}
+          <div className="flex items-center justify-between w-full max-[432px]:hidden">
             {/* Search box */}
             <div className="relative">
               <input
@@ -572,41 +644,43 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
             </div>
             
             {/* Filter Button */}
-            <Popover>
-              <PopoverTrigger asChild>
-                <button 
-                  className="flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-3 md:px-4 lg:px-3 xl:px-3 2xl:px-4 py-1.5 sm:py-2 rounded-full bg-orange-500 h-[32px] sm:h-[38px] lg:h-[40px] max-[450px]:h-[40px] max-[450px]:px-1.5 flex-shrink-0"
-                  onClick={() => setFilterOpen(!filterOpen)}
-                >
-                  <FunnelIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white" /> 
-                  <ChevronDownIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-                </button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto bg-zinc-800 border-zinc-700" align="end">
-                <div className="flex flex-col gap-2">
-                  <label className="flex items-center space-x-2 cursor-pointer border-b border-zinc-700 pb-2">
-                    <input
-                      type="checkbox"
-                      checked={allSelected}
-                      onChange={() => handleTypeToggle('All')}
-                      className="rounded bg-zinc-700 border-zinc-600 text-orange-500 focus:ring-orange-500"
-                    />
-                    <span className="text-sm text-white">All</span>
-                  </label>
-                  {eventTypes.map((type) => (
-                    <label key={type} className="flex items-center space-x-2 cursor-pointer">
+            <div className="max-[432px]:w-[74px]">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button 
+                    className="flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-3 md:px-4 lg:px-3 xl:px-3 2xl:px-4 py-1.5 sm:py-2 rounded-full bg-orange-500 h-[32px] sm:h-[38px] lg:h-[40px] max-[450px]:h-[40px] max-[450px]:px-1.5 flex-shrink-0"
+                    onClick={() => setFilterOpen(!filterOpen)}
+                  >
+                    <FunnelIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white" /> 
+                    <ChevronDownIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto bg-zinc-800 border-zinc-700" align="end">
+                  <div className="flex flex-col gap-2">
+                    <label className="flex items-center space-x-2 cursor-pointer border-b border-zinc-700 pb-2">
                       <input
                         type="checkbox"
-                        checked={selectedTypes.includes(type)}
-                        onChange={() => handleTypeToggle(type)}
+                        checked={allSelected}
+                        onChange={() => handleTypeToggle('All')}
                         className="rounded bg-zinc-700 border-zinc-600 text-orange-500 focus:ring-orange-500"
                       />
-                      <span className="text-sm text-white">{type}</span>
+                      <span className="text-sm text-white">All</span>
                     </label>
-                  ))}
-                </div>
-              </PopoverContent>
-            </Popover>
+                    {eventTypes.map((type) => (
+                      <label key={type} className="flex items-center space-x-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={selectedTypes.includes(type)}
+                          onChange={() => handleTypeToggle(type)}
+                          className="rounded bg-zinc-700 border-zinc-600 text-orange-500 focus:ring-orange-500"
+                        />
+                        <span className="text-sm text-white">{type}</span>
+                      </label>
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </div>
           
             {/* Button to open the Add Event modal */}
             <button 
@@ -620,7 +694,7 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
         </div>
         
         {/* Events list area */}
-        <div className="flex-1 overflow-y-auto pb-6 custom-scrollbar max-[471px]:mt-[24px]">
+        <div className="flex-1 overflow-y-auto pb-[80px] max-[432px]:pb-[40px] custom-scrollbar max-[471px]:mt-[24px]">
           <div className="w-full md:w-full lg:w-[399px] px-3 sm:px-4 md:px-0 md:ml-4 max-[471px]:px-3">
             {showCustomAddEvent ? (
               <div className="bg-zinc-800 rounded-xl mb-4 overflow-y-auto">
@@ -965,6 +1039,26 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
               </div>
             )}
           </div>
+        </div>
+        
+        {/* Fixed View Map button - only visible on screens < 432px */}
+        <div className="hidden max-[432px]:flex justify-center fixed-within-container pointer-events-none" style={{position: 'absolute', bottom: '20px', left: 0, right: 0, zIndex: 50}}>
+          <button 
+            onClick={() => {
+              // This will be handled by the parent component
+              window.dispatchEvent(new CustomEvent('toggleMapView'));
+            }}
+            className="bg-orange-500 text-white py-2.5 px-4 rounded-full shadow-xl flex items-center gap-2 transition-all hover:bg-orange-600 active:bg-orange-700 pointer-events-auto"
+            style={{boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4)'}}
+            aria-label="Toggle Map View"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+              <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6" />
+              <line x1="8" y1="2" x2="8" y2="18" />
+              <line x1="16" y1="6" x2="16" y2="22" />
+            </svg>
+            <span className="font-medium text-sm">Map</span>
+          </button>
         </div>
       </div>
     </div>
