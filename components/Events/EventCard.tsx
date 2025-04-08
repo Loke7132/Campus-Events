@@ -114,7 +114,7 @@ export function EventCard({ event, isSelected, onClick, onEdit }: EventCardProps
                 setShowDropdown(!showDropdown);
               }}
             >
-              <EllipsisVerticalIcon className="h-3.5 w-3.5 sm:h-5 sm:w-5 text-zinc-500 flex-shrink-0" />
+              <EllipsisVerticalIcon className="h-3.5 w-3.5 sm:h-5 sm:w-5 max-[432px]:h-5 max-[432px]:w-5 text-zinc-500 flex-shrink-0" />
             </button>
             
             {/* Dropdown menu */}
@@ -166,7 +166,7 @@ export function EventCard({ event, isSelected, onClick, onEdit }: EventCardProps
           )}
           
           {/* Action buttons */}
-          <div className="flex items-center justify-between w-full mt-auto pr-0.5">
+          <div className="flex items-center justify-between w-full mt-auto pr-0.5 max-[432px]:gap-2">
             {/* RSVP Button - Always active */}
             <button 
               className="flex items-center justify-center px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-zinc-700 text-white text-xs sm:text-sm font-medium h-7 sm:h-auto max-[471px]:h-[30px] max-[471px]:w-[66px]"
