@@ -561,7 +561,7 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
           {/* Special layout for very small screens (<432px) */}
           <div className="hidden max-[432px]:flex max-[432px]:flex-row max-[432px]:items-center max-[432px]:w-full max-[432px]:h-[40px] max-[432px]:justify-between">
             {/* Search box - 112px */}
-            <div className="w-[112px]">
+            <div className="w-[112px] max-[400px]:w-[95px]">
               <div className="relative">
                 <input
                   type="text"
@@ -577,11 +577,11 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
             </div>
             
             {/* Filter Button - 74px */}
-            <div className="w-[74px]">
+            <div className="w-[74px] max-[400px]:w-[63px]">
               <Popover>
                 <PopoverTrigger asChild>
                   <button 
-                    className="w-[74px] h-[40px] flex items-center justify-center gap-1 px-1.5 py-1.5 rounded-full bg-orange-500 flex-shrink-0"
+                    className="w-[74px] max-[400px]:w-[63px] h-[40px] flex items-center justify-center gap-1 px-1.5 py-1.5 rounded-full bg-orange-500 flex-shrink-0"
                     onClick={() => setFilterOpen(!filterOpen)}
                   >
                     <FunnelIcon className="w-4 h-4 text-white" /> 
@@ -616,7 +616,7 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
             </div>
             
             {/* Button to open the Add Event modal - 117px */}
-            <div className="w-[117px]">
+            <div className="w-[117px] max-[400px]:w-[100px]">
               <button 
                 className="w-full h-[40px] flex items-center justify-center gap-1 px-2 py-1.5 bg-orange-500 rounded-full flex-shrink-0 whitespace-nowrap"
                 onClick={() => setShowCustomAddEvent(true)}
