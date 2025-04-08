@@ -169,7 +169,7 @@ export function EventCard({ event, isSelected, onClick, onEdit }: EventCardProps
           <div className="flex items-center justify-between w-full mt-auto pr-0.5">
             {/* RSVP Button - Always active */}
             <button 
-              className="flex items-center justify-center px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-zinc-700 text-white text-xs sm:text-sm font-medium h-7 sm:h-auto"
+              className="flex items-center justify-center px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-zinc-700 text-white text-xs sm:text-sm font-medium h-7 sm:h-auto max-[471px]:h-[30px] max-[471px]:w-[66px]"
               onClick={(e) => {
                 e.stopPropagation();
                 // If there's a valid RSVP link, navigate to it
@@ -185,7 +185,7 @@ export function EventCard({ event, isSelected, onClick, onEdit }: EventCardProps
             </button>
             
             <button 
-              className="flex items-center justify-center rounded-full bg-zinc-700 p-1 sm:p-2 h-7 w-7 sm:h-auto sm:w-auto"
+              className="flex items-center justify-center rounded-full bg-zinc-700 p-1 sm:p-2 h-7 w-7 sm:h-auto sm:w-auto max-[471px]:h-[30px] max-[471px]:w-[30px]"
               onClick={(e) => {
                 e.stopPropagation();
                 // Open location in maps if available
@@ -199,7 +199,7 @@ export function EventCard({ event, isSelected, onClick, onEdit }: EventCardProps
             </button>
             
             <button 
-              className="flex items-center justify-center rounded-full bg-zinc-700 p-1 sm:p-2 h-7 w-7 sm:h-auto sm:w-auto"
+              className="flex items-center justify-center rounded-full bg-zinc-700 p-1 sm:p-2 h-7 w-7 sm:h-auto sm:w-auto max-[471px]:h-[30px] max-[471px]:w-[30px]"
               onClick={(e) => {
                 e.stopPropagation();
                 // Add to calendar functionality

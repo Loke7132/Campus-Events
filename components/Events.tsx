@@ -553,62 +553,61 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
       </div>
 
       {/* Events container */}
-      <div className="bg-zinc-900 rounded-3xl flex-1 overflow-hidden flex flex-col w-full sm:w-full md:w-full lg:w-[440px] h-auto lg:h-[799px]">
+      <div className="bg-zinc-900 rounded-3xl flex-1 overflow-hidden flex flex-col w-full sm:w-full md:w-full lg:w-[440px] h-auto lg:h-[799px] max-[471px]:mt-[20px]">
         {/* Events header with filter */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-center md:justify-start p-3 sm:p-4 gap-2 sm:gap-0 flex-shrink-0">
-          <div className="flex items-center justify-between sm:justify-between w-full max-w-full md:max-w-full lg:w-[440px]">
-            <div className="flex items-center gap-10 md:gap-6 max-[390px]:mr-1">
-              {/* Search box */}
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder={searchPlaceholder}
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-[157px] h-[39px] max-[450px]:w-[120px] max-[450px]:h-[40px] max-[450px]:text-xs max-[450px]:py-1.5 bg-zinc-800 text-white text-sm rounded-full pl-8 pr-3 py-2 placeholder-white focus:outline-none focus:ring-1 focus:ring-orange-500"
-                />
-                <MagnifyingGlassIcon
-                  className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white"
-                />
-              </div>
-              
-              <Popover>
-                <PopoverTrigger asChild>
-                  <button 
-                    className="flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-3 md:px-4 lg:px-3 xl:px-3 2xl:px-4 py-1.5 sm:py-2 rounded-full bg-orange-500 h-[32px] sm:h-[38px] lg:h-[40px] max-[450px]:h-[40px] max-[450px]:px-1.5 flex-shrink-0"
-                    onClick={() => setFilterOpen(!filterOpen)}
-                  >
-                    <FunnelIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white" /> 
-                    <ChevronDownIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white hidden sm:block" />
-                  </button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto bg-zinc-800 border-zinc-700" align="end">
-                  <div className="flex flex-col gap-2">
-                    <label className="flex items-center space-x-2 cursor-pointer border-b border-zinc-700 pb-2">
-                      <input
-                        type="checkbox"
-                        checked={allSelected}
-                        onChange={() => handleTypeToggle('All')}
-                        className="rounded bg-zinc-700 border-zinc-600 text-orange-500 focus:ring-orange-500"
-                      />
-                      <span className="text-sm text-white">All</span>
-                    </label>
-                    {eventTypes.map((type) => (
-                      <label key={type} className="flex items-center space-x-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={selectedTypes.includes(type)}
-                          onChange={() => handleTypeToggle(type)}
-                          className="rounded bg-zinc-700 border-zinc-600 text-orange-500 focus:ring-orange-500"
-                        />
-                        <span className="text-sm text-white">{type}</span>
-                      </label>
-                    ))}
-                  </div>
-                </PopoverContent>
-              </Popover>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-center md:justify-start p-3 sm:p-4 gap-2 sm:gap-0 flex-shrink-0 max-[471px]:px-3 max-[471px]:pb-0">
+          <div className="flex items-center justify-between w-full">
+            {/* Search box */}
+            <div className="relative">
+              <input
+                type="text"
+                placeholder={searchPlaceholder}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-[157px] h-[39px] max-[450px]:w-[120px] max-[450px]:h-[40px] max-[450px]:text-xs max-[450px]:py-1.5 bg-zinc-800 text-white text-sm rounded-full pl-8 pr-3 py-2 placeholder-white focus:outline-none focus:ring-1 focus:ring-orange-500"
+              />
+              <MagnifyingGlassIcon
+                className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white"
+              />
             </div>
             
+            {/* Filter Button */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <button 
+                  className="flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-3 md:px-4 lg:px-3 xl:px-3 2xl:px-4 py-1.5 sm:py-2 rounded-full bg-orange-500 h-[32px] sm:h-[38px] lg:h-[40px] max-[450px]:h-[40px] max-[450px]:px-1.5 flex-shrink-0"
+                  onClick={() => setFilterOpen(!filterOpen)}
+                >
+                  <FunnelIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white" /> 
+                  <ChevronDownIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto bg-zinc-800 border-zinc-700" align="end">
+                <div className="flex flex-col gap-2">
+                  <label className="flex items-center space-x-2 cursor-pointer border-b border-zinc-700 pb-2">
+                    <input
+                      type="checkbox"
+                      checked={allSelected}
+                      onChange={() => handleTypeToggle('All')}
+                      className="rounded bg-zinc-700 border-zinc-600 text-orange-500 focus:ring-orange-500"
+                    />
+                    <span className="text-sm text-white">All</span>
+                  </label>
+                  {eventTypes.map((type) => (
+                    <label key={type} className="flex items-center space-x-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={selectedTypes.includes(type)}
+                        onChange={() => handleTypeToggle(type)}
+                        className="rounded bg-zinc-700 border-zinc-600 text-orange-500 focus:ring-orange-500"
+                      />
+                      <span className="text-sm text-white">{type}</span>
+                    </label>
+                  ))}
+                </div>
+              </PopoverContent>
+            </Popover>
+          
             {/* Button to open the Add Event modal */}
             <button 
               className="flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-orange-500 rounded-full h-[40px] max-[450px]:h-[40px] max-[450px]:px-2 flex-shrink-0 whitespace-nowrap"
@@ -621,8 +620,8 @@ export default function Events({ events, selectedEvent, onEventSelect, onEventAd
         </div>
         
         {/* Events list area */}
-        <div className="flex-1 overflow-y-auto pb-6 custom-scrollbar">
-          <div className="w-full md:w-full lg:w-[399px] px-3 sm:px-4 md:px-0 md:ml-4">
+        <div className="flex-1 overflow-y-auto pb-6 custom-scrollbar max-[471px]:mt-[24px]">
+          <div className="w-full md:w-full lg:w-[399px] px-3 sm:px-4 md:px-0 md:ml-4 max-[471px]:px-3">
             {showCustomAddEvent ? (
               <div className="bg-zinc-800 rounded-xl mb-4 overflow-y-auto">
                 <div className="flex justify-between items-center p-3 border-b border-zinc-700 sticky top-0 bg-zinc-800 z-10">
