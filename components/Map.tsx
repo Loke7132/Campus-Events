@@ -166,12 +166,12 @@ export default function Map({ events, userPos, selectedEvent, onEventSelect, onC
             
             const mapOptions = {
                 container,
-                style: "mapbox://styles/sanjay07/cm7apwi2u005d01p7efst9xll",
+            style: "mapbox://styles/sanjay07/cm7apwi2u005d01p7efst9xll",
                 center: userPos ? [userPos[1], userPos[0]] as [number, number] : center as [number, number],
-                zoom,
-                pitch,
-                bearing: 45,
-                antialias: true,
+            zoom,
+            pitch,
+            bearing: 45,
+            antialias: true,
                 maxBounds: [[-180, -90], [180, 90]] as mapboxgl.LngLatBoundsLike
             };
             
@@ -186,111 +186,111 @@ export default function Map({ events, userPos, selectedEvent, onEventSelect, onC
             // Only add controls after the map is fully loaded
             map.once('load', () => {
                 try {
-                    map.addControl(new mapboxgl.NavigationControl({ visualizePitch: true }));
+        map.addControl(new mapboxgl.NavigationControl({ visualizePitch: true }));
                 } catch (error) {
                     console.error("Error adding controls:", error);
                 }
             });
 
-            map.on("style.load", () => {
+        map.on("style.load", () => {
                 try {
-                    map.addSource("mapbox-dem", {
-                        type: "raster-dem",
-                        url: "mapbox://mapbox.mapbox-terrain-dem-v1",
-                        tileSize: 512,
-                        maxzoom: 14
-                    });
+            map.addSource("mapbox-dem", {
+                type: "raster-dem",
+                url: "mapbox://mapbox.mapbox-terrain-dem-v1",
+                tileSize: 512,
+                maxzoom: 14
+            });
 
-                    map.setTerrain({ source: "mapbox-dem", exaggeration: 1.5 });
+            map.setTerrain({ source: "mapbox-dem", exaggeration: 1.5 });
 
-                    map.addLayer({
-                        id: "3d-buildings",
-                        source: "composite",
-                        "source-layer": "building",
-                        filter: ["==", "extrude", "true"],
-                        type: "fill-extrusion",
-                        minzoom: 15,
-                        paint: {
-                            "fill-extrusion-color": [
-                                "interpolate",
-                                ["linear"],
-                                ["get", "height"],
-                                0, "#2D3748",
-                                50, "#4A5568",
-                                100, "#718096",
-                                200, "#A0AEC0"
-                            ],
-                            "fill-extrusion-height": ["get", "height"],
-                            "fill-extrusion-base": 0,
-                            "fill-extrusion-opacity": 0.8,
-                            "fill-extrusion-ambient-occlusion-intensity": 1,
-                            "fill-extrusion-ambient-occlusion-radius": 2,
-                            "fill-extrusion-vertical-gradient": true
-                        }
-                    });
+            map.addLayer({
+                id: "3d-buildings",
+                source: "composite",
+                "source-layer": "building",
+                filter: ["==", "extrude", "true"],
+                type: "fill-extrusion",
+                minzoom: 15,
+                paint: {
+                    "fill-extrusion-color": [
+                        "interpolate",
+                        ["linear"],
+                        ["get", "height"],
+                        0, "#2D3748",
+                        50, "#4A5568",
+                        100, "#718096",
+                        200, "#A0AEC0"
+                    ],
+                    "fill-extrusion-height": ["get", "height"],
+                    "fill-extrusion-base": 0,
+                    "fill-extrusion-opacity": 0.8,
+                    "fill-extrusion-ambient-occlusion-intensity": 1,
+                    "fill-extrusion-ambient-occlusion-radius": 2,
+                    "fill-extrusion-vertical-gradient": true
+                }
+            });
                 } catch (error) {
                     console.error("Error in style.load event:", error);
                 }
-            });
+        });
 
-            // Clean up existing markers
-            markersRef.current.forEach(marker => marker.remove());
-            popupsRef.current.forEach(popup => popup.remove());
-            markersRef.current = [];
-            popupsRef.current = [];
+        // Clean up existing markers
+        markersRef.current.forEach(marker => marker.remove());
+        popupsRef.current.forEach(popup => popup.remove());
+        markersRef.current = [];
+        popupsRef.current = [];
 
-            // Add markers for events
-            filteredEvents.forEach((event) => {
-                if (event.latitude && event.longitude) {
+        // Add markers for events
+        filteredEvents.forEach((event) => {
+            if (event.latitude && event.longitude) {
                     try {
-                        const el = document.createElement("div");
-                        
-                        // Determine event timing
-                        const now = new Date();
-                        const [year, month, day] = event.date.split('-').map(Number);
-                        const eventDate = new Date(year, month - 1, day);
-                        
-                        const [startHour, startMinute] = (event.startTime || '').split(':').map(Number);
-                        const [endHour, endMinute] = (event.endTime || '').split(':').map(Number);
-                        const startDateTime = new Date(year, month - 1, day, startHour || 0, startMinute || 0);
-                        const endDateTime = new Date(year, month - 1, day, endHour || 23, endMinute || 59);
-                        
-                        // Set marker color and size based on selection and timing
-                        const isPast = endDateTime < now;
-                        const isOngoing = startDateTime <= now && endDateTime >= now;
-                        const isFuture = eventDate > new Date(now.getTime() + (24 * 60 * 60 * 1000));
-                        const isToday = eventDate.toDateString() === now.toDateString();
-                        const isSelected = selectedEvent === event.id;
-                        
-                        const baseClass = isSelected ? 'h-1 w-1 sm:h-5 sm:w-5' : 'h-0.5 w-0.5 sm:h-4 sm:w-4';
-                        const ringClass = isSelected ? 'ring-1 sm:ring-[3px]' : 'ring-1 sm:ring-2';
-                        
-                        if (isOngoing) {
-                            el.className = `${baseClass} rounded-full bg-red-500 ${ringClass} ring-red-200 shadow-[0px_0px_2px_1px_rgba(239,68,68,0.5)] sm:shadow-[0px_0px_8px_4px_rgba(239,68,68,0.5)] transition-all`;
-                        } else if (isPast) {
-                            el.className = `${baseClass} rounded-full bg-zinc-500 ${ringClass} ring-zinc-200 shadow-[0px_0px_2px_1px_rgba(161,161,170,0.5)] sm:shadow-[0px_0px_8px_4px_rgba(161,161,170,0.5)] transition-all`;
-                        } else if (isFuture) {
-                            el.className = `${baseClass} rounded-full bg-purple-500 ${ringClass} ring-purple-200 shadow-[0px_0px_2px_1px_rgba(168,85,247,0.5)] sm:shadow-[0px_0px_8px_4px_rgba(168,85,247,0.5)] transition-all`;
-                        } else if (isToday && startDateTime > now) {
-                            el.className = `${baseClass} rounded-full bg-green-500 ${ringClass} ring-green-200 shadow-[0px_0px_2px_1px_rgba(34,197,94,0.5)] sm:shadow-[0px_0px_8px_4px_rgba(34,197,94,0.5)] transition-all`;
-                        } else {
-                            el.className = `${baseClass} rounded-full bg-green-500 ${ringClass} ring-green-200 shadow-[0px_0px_2px_1px_rgba(34,197,94,0.5)] sm:shadow-[0px_0px_8px_4px_rgba(34,197,94,0.5)] transition-all`;
-                        }
+                const el = document.createElement("div");
+                
+                // Determine event timing
+                const now = new Date();
+                const [year, month, day] = event.date.split('-').map(Number);
+                const eventDate = new Date(year, month - 1, day);
+                
+                const [startHour, startMinute] = (event.startTime || '').split(':').map(Number);
+                const [endHour, endMinute] = (event.endTime || '').split(':').map(Number);
+                const startDateTime = new Date(year, month - 1, day, startHour || 0, startMinute || 0);
+                const endDateTime = new Date(year, month - 1, day, endHour || 23, endMinute || 59);
+                
+                // Set marker color and size based on selection and timing
+                const isPast = endDateTime < now;
+                const isOngoing = startDateTime <= now && endDateTime >= now;
+                const isFuture = eventDate > new Date(now.getTime() + (24 * 60 * 60 * 1000));
+                const isToday = eventDate.toDateString() === now.toDateString();
+                const isSelected = selectedEvent === event.id;
+                
+                const baseClass = isSelected ? 'h-1 w-1 sm:h-5 sm:w-5' : 'h-0.5 w-0.5 sm:h-4 sm:w-4';
+                const ringClass = isSelected ? 'ring-1 sm:ring-[3px]' : 'ring-1 sm:ring-2';
+                
+                if (isOngoing) {
+                    el.className = `${baseClass} rounded-full bg-red-500 ${ringClass} ring-red-200 shadow-[0px_0px_2px_1px_rgba(239,68,68,0.5)] sm:shadow-[0px_0px_8px_4px_rgba(239,68,68,0.5)] transition-all`;
+                } else if (isPast) {
+                    el.className = `${baseClass} rounded-full bg-zinc-500 ${ringClass} ring-zinc-200 shadow-[0px_0px_2px_1px_rgba(161,161,170,0.5)] sm:shadow-[0px_0px_8px_4px_rgba(161,161,170,0.5)] transition-all`;
+                } else if (isFuture) {
+                    el.className = `${baseClass} rounded-full bg-purple-500 ${ringClass} ring-purple-200 shadow-[0px_0px_2px_1px_rgba(168,85,247,0.5)] sm:shadow-[0px_0px_8px_4px_rgba(168,85,247,0.5)] transition-all`;
+                } else if (isToday && startDateTime > now) {
+                    el.className = `${baseClass} rounded-full bg-green-500 ${ringClass} ring-green-200 shadow-[0px_0px_2px_1px_rgba(34,197,94,0.5)] sm:shadow-[0px_0px_8px_4px_rgba(34,197,94,0.5)] transition-all`;
+                } else {
+                    el.className = `${baseClass} rounded-full bg-green-500 ${ringClass} ring-green-200 shadow-[0px_0px_2px_1px_rgba(34,197,94,0.5)] sm:shadow-[0px_0px_8px_4px_rgba(34,197,94,0.5)] transition-all`;
+                }
 
                         const popupOptions = {
-                            closeButton: false,
-                            closeOnClick: false,
-                            className: "shadow-lg",
+                    closeButton: false,
+                    closeOnClick: false,
+                    className: "shadow-lg",
                             offset: [0, -5] as [number, number]
                         };
                         
                         const popup = new mapboxgl.Popup(popupOptions)
                             .setHTML(createEventPopupHTML(event));
 
-                        const marker = new mapboxgl.Marker(el)
-                            .setLngLat([event.longitude, event.latitude])
-                            .setPopup(popup)
-                            .addTo(map);
+                const marker = new mapboxgl.Marker(el)
+                    .setLngLat([event.longitude, event.latitude])
+                    .setPopup(popup)
+                    .addTo(map);
 
                         // Use safer event binding
                         const onMouseEnter = () => popup.addTo(map);
@@ -301,73 +301,73 @@ export default function Map({ events, userPos, selectedEvent, onEventSelect, onC
                         el.addEventListener("mouseleave", onMouseLeave);
                         el.addEventListener("click", onClick);
 
-                        markersRef.current.push(marker);
-                        popupsRef.current.push(popup);
+                markersRef.current.push(marker);
+                popupsRef.current.push(popup);
                     } catch (error) {
                         console.error("Error creating marker:", error);
                     }
-                }
-            });
+            }
+        });
 
-            // Add user location marker if available
-            if (userPos) {
+        // Add user location marker if available
+        if (userPos) {
                 try {
-                    const userMarker = document.createElement("div");
-                    userMarker.className = "h-2 w-2 sm:h-6 sm:w-6 text-blue-500 transition-all animate-pulse";
-                    userMarker.innerHTML = `
-                        <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full drop-shadow-[0px_0px_8px_rgba(14,165,233,0.8)]">
-                            <path fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
-                        </svg>
-                    `;
-                    const marker = new mapboxgl.Marker(userMarker)
-                        .setLngLat([userPos[1], userPos[0]])
-                        .addTo(map);
-                    markersRef.current.push(marker);
+            const userMarker = document.createElement("div");
+            userMarker.className = "h-2 w-2 sm:h-6 sm:w-6 text-blue-500 transition-all animate-pulse";
+            userMarker.innerHTML = `
+                <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full drop-shadow-[0px_0px_8px_rgba(14,165,233,0.8)]">
+                    <path fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+                </svg>
+            `;
+            const marker = new mapboxgl.Marker(userMarker)
+                .setLngLat([userPos[1], userPos[0]])
+                .addTo(map);
+            markersRef.current.push(marker);
                 } catch (error) {
                     console.error("Error creating user marker:", error);
                 }
-            }
+        }
 
-            // When selecting a new event, fly to its location
-            if (selectedEvent) {
-                const event = events.find(e => e.id === selectedEvent);
-                if (event?.latitude && event?.longitude) {
+        // When selecting a new event, fly to its location
+        if (selectedEvent) {
+            const event = events.find(e => e.id === selectedEvent);
+            if (event?.latitude && event?.longitude) {
                     try {
-                        map.flyTo({
-                            center: [event.longitude, event.latitude],
-                            zoom: selectedEvent ? 17 : 16.25,
-                            duration: 1000
-                        });
+                map.flyTo({
+                    center: [event.longitude, event.latitude],
+                    zoom: selectedEvent ? 17 : 16.25,
+                    duration: 1000
+                });
                     } catch (error) {
                         console.error("Error flying to selected event:", error);
                     }
-                }
-            } else {
-                // When deselecting, return to original view if user location exists
-                if (userPos) {
+            }
+        } else {
+            // When deselecting, return to original view if user location exists
+            if (userPos) {
                     try {
-                        map.flyTo({
-                            center: [userPos[1], userPos[0]],
-                            zoom: 16.25,
-                            duration: 1000
-                        });
+                map.flyTo({
+                    center: [userPos[1], userPos[0]],
+                    zoom: 16.25,
+                    duration: 1000
+                });
                     } catch (error) {
                         console.error("Error flying to user location:", error);
                     }
-                }
             }
+        }
 
-            mapRef.current = map;
+        mapRef.current = map;
 
-            return () => {
+        return () => {
                 try {
-                    markersRef.current.forEach(marker => marker.remove());
-                    popupsRef.current.forEach(popup => popup.remove());
-                    map.remove();
+            markersRef.current.forEach(marker => marker.remove());
+            popupsRef.current.forEach(popup => popup.remove());
+            map.remove();
                 } catch (error) {
                     console.error("Error during cleanup:", error);
                 }
-            };
+        };
         } catch (error) {
             console.error("Error initializing map:", error);
             return () => {};
